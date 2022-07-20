@@ -24,6 +24,6 @@ public extension UIFont {
         }
         return self
     }
-    
+
 }
 
