@@ -16,7 +16,7 @@ extension UIScene {
             let initialViewController: UIViewController
             if embedInNavigationController {
                 let navigationController = UINavigationController()
-                navigationController.setToolbarHidden(false, animated: false)
+                navigationController.setToolbarHidden(toolbarHidden, animated: false)
                 navigationController.viewControllers = [rootViewController]
                 initialViewController = navigationController
             } else {
