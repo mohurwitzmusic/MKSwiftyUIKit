@@ -8,7 +8,7 @@
 import UIKit
 
 
-extension UIScene {
+public extension UIScene {
     
     func configureWindow(rootViewController: UIViewController, embedInNavigationController: Bool, toolbarHidden: Bool) -> UIWindow! {
         if let windowScene = self as? UIWindowScene {
