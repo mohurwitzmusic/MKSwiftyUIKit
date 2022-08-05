@@ -9,7 +9,7 @@ import UIKit
 
 public extension UIViewController {
 
-    func quickAddChildAndView(_ viewController: UIViewController, frame: CGRect?) {
+    func addChildAndView(_ viewController: UIViewController, frame: CGRect?) {
         viewController.willMove(toParent: self)
         addChild(viewController)
         view.addSubview(viewController.view)
