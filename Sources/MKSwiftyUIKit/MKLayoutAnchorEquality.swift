@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 public enum MKLayoutAnchorEquality {
     case equalToConstant(CGFloat)
     case lessThanOrEqualToConstant(CGFloat)
