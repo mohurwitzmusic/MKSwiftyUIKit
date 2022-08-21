@@ -10,10 +10,11 @@ import UIKit
 
 public extension UIImageView {
     
-    convenience init(contentMode: ContentMode, image: UIImage? = nil) {
+    convenience init(contentMode: ContentMode, image: UIImage? = nil, preferredSymbolConfiguration: UIImage.SymbolConfiguration = .init(scale: .default)) {
         self.init(frame: .zero)
         self.contentMode = contentMode
         self.image = image
+        self.preferredSymbolConfiguration = preferredSymbolConfiguration
     }
     
     
