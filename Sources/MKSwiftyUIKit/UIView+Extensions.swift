@@ -83,4 +83,21 @@ public extension UIView {
         self.setContentCompressionResistancePriority(compression, for: .horizontal)
         self.setContentHuggingPriority(hugging, for: .horizontal)
     }
+    
+    convenience init(backgroundColor: UIColor) {
+        self.init()
+        self.backgroundColor = backgroundColor
+    }
+    
+    convenience init(backgroundColor: UIColor, cornerRadius: CGFloat) {
+        self.init(backgroundColor: backgroundColor)
+        self.layer.cornerRadius = cornerRadius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
+    
+    convenience init(cornerRadius: CGFloat) {
+        self.init()
+        self.layer.cornerRadius = cornerRadius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
 }
