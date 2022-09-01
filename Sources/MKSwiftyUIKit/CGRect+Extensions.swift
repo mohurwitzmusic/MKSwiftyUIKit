@@ -13,4 +13,8 @@ public extension CGRect {
         return .init(x: midX, y: midY)
     }
     
+    var largestInscribedCircleRadius: CGFloat {
+        return min(width, height) / 2
+    }
+
 }
