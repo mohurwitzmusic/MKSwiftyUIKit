@@ -16,5 +16,21 @@ public extension CGRect {
     var largestInscribedCircleRadius: CGFloat {
         return min(width, height) / 2
     }
+    
+    var topLeft: CGPoint {
+        .init(x: minX, y: minY)
+    }
+    
+    var topRight: CGPoint {
+        .init(x: maxX, y: minY)
+    }
+    
+    var bottomLeft: CGPoint {
+        .init(x: minX, y: maxY)
+    }
+    
+    var bottomRight: CGPoint {
+        .init(x: maxX, y: maxY)
+    }
 
 }
