@@ -1,10 +1,3 @@
-//
-//  MKFrameAdjustableViewPanAndPinchGestureRecognizer.swift
-//  ResizeableWindow
-//
-//  Created by Michael O. Hurwitz on 8/3/17.
-//  Copyright © 2017 MIDI Kinetics. All rights reserved.
-//
 
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
@@ -29,13 +22,8 @@ import UIKit.UIGestureRecognizerSubclass
 ///
 /// Consumers of this class can get the new frame for the view by calling the `frame(forView:)`
 /// method, passing in the view to be moved/resized. If the view has no superview it returns the original view's frame.
-///
-/// The view will never be made smaller than 44 x 44.
-/// Set the `allowsOffscreen` property to allow the view to go offscreen. Care must be taken to prevent the view from becoming unreachable.
-/// Use the alternate method `safeFrame(forView:)` which attempts to take care of this for you.
-/// If the gesture recognizer is being used on a `UINavgationBar` to emulate a floating window, there is also `safeFrameForFloatingWindow(forView:)`.
 
-public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecognizer {
+public class MKFloatingWindowGestureRecognizer: UIGestureRecognizer {
     
     //MARK: - Public
     
@@ -47,13 +35,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
     
     /** The currently recognized gesture. */
     public private(set)var gesture: Gesture = .none
-    
-    /** The view will allowed to be moved offscreen. Care must be taken so that the view doesn't become unreachable.
-        Use `safeFrame(forView:) to have the gesture recognizer attempt to take care of this for you */
-    public var constrainsToSuperview: Bool = true
-    
-    
-    
+   
     /** Pinch gestures will allow the screen to be resized **/
     public var isResizeEnabled = true
     
@@ -67,91 +49,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
         let y: CGFloat = view.frame.minY + self.dY
         let w: CGFloat = view.frame.width + self.dW
         let h: CGFloat = view.frame.height + self.dH
-        
-        switch self.gesture {
-        case .none:
-            
-            return view.frame
-            
-        case .pan:
-            let minX: CGFloat = constrainsToSuperview ? 0 : x
-            let maxX: CGFloat = constrainsToSuperview ? superView.bounds.width - w : x
-            let minY: CGFloat = constrainsToSuperview ? 0 : y
-            let maxY: CGFloat = constrainsToSuperview ? superView.bounds.height - h : y
-            return CGRect(x: min(max(minX, x), maxX),
-                          y: min(max(minY, y), maxY),
-                          width: w,
-                          height: h)
-            
-        case .pinch:
-            
-            let minW: CGFloat = 44
-            let maxW: CGFloat = constrainsToSuperview ? superView.bounds.width - x : w
-            let minH: CGFloat = 44
-            let maxH: CGFloat = constrainsToSuperview ? superView.bounds.height - y : h
-            
-            return CGRect(x: x,
-                          y: y,
-                          width: min(max(minW, w), maxW),
-                          height: min(max(minH, h), maxH))
-            
-        }
-        
-    }
-    
-    /** Returns the new frame based on the pan or pinch translation. If no resize is occuring, or if the view has no superview, simply returns the original frame.
-     Attempts to keep the view within the superview's bounds. */
-    public func safeFrame(forView view: UIView, minSize: CGSize = CGSize(width: 44, height: 44)) -> CGRect {
-        
-        guard let superView = view.superview else { return view.frame }
-        
-        let x: CGFloat = view.frame.minX + self.dX
-        let y: CGFloat = view.frame.minY + self.dY
-        let w: CGFloat = view.frame.width + self.dW
-        let h: CGFloat = view.frame.height + self.dH
-        
-        switch self.gesture {
-        case .none:
-            
-            return view.frame
-            
-        case .pan:
-            let minX: CGFloat = -view.frame.width + minSize.width
-            let maxX: CGFloat = superView.bounds.width - minSize.width
-            let minY: CGFloat = -view.frame.height + minSize.height
-            let maxY: CGFloat = superView.bounds.height - minSize.height
-            return CGRect(x: min(max(minX, x), maxX),
-                          y: min(max(minY, y), maxY),
-                          width: w,
-                          height: h)
-            
-        case .pinch:
-            
-            let minW: CGFloat = 44
-            let maxW: CGFloat = w
-            let minH: CGFloat = 44
-            let maxH: CGFloat = h
-            
-            return CGRect(x: x,
-                          y: y,
-                          width: min(max(minW, w), maxW),
-                          height: min(max(minH, h), maxH))
-            
-        }
-
-        
-    }
-    
-    /** Returns the new frame based on the pan or pinch translation. If no resize is occuring, or if the view has no superview, simply returns the original frame.
-     Attempts to keep the view within the superview's bounds. */
-    public func safeFrameForFloatingWindow(forView view: UIView) -> CGRect {
-        guard let superView = view.superview else { return view.frame }
-        
-        let x: CGFloat = view.frame.minX + self.dX
-        let y: CGFloat = view.frame.minY + self.dY
-        let w: CGFloat = view.frame.width + self.dW
-        let h: CGFloat = view.frame.height + self.dH
-        
+                
         let navBarHeight: CGFloat = 44
         let navBarTitleWidth: CGFloat = 200
         
@@ -163,7 +61,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
         case .pan:
             let minX: CGFloat = -view.frame.width + view.frame.width/2
             let maxX: CGFloat = superView.bounds.width - view.frame.width/2
-            let minY: CGFloat = 0
+            let minY: CGFloat = superView.safeAreaInsets.top
             let maxY: CGFloat = superView.bounds.height - navBarHeight
             return CGRect(x: min(max(minX, x), maxX),
                           y: min(max(minY, y), maxY),
@@ -171,6 +69,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
                           height: h)
             
         case .pinch:
+            
             
             let minW: CGFloat = navBarTitleWidth
             let maxW: CGFloat = w
@@ -183,9 +82,8 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
                           height: min(max(minH, h), maxH))
             
         }
-
     }
-    
+
     
     
     //MARK: - Private
