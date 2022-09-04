@@ -145,7 +145,6 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
     /** Returns the new frame based on the pan or pinch translation. If no resize is occuring, or if the view has no superview, simply returns the original frame.
      Attempts to keep the view within the superview's bounds. */
     public func safeFrameForFloatingWindow(forView view: UIView) -> CGRect {
-        
         guard let superView = view.superview else { return view.frame }
         
         let x: CGFloat = view.frame.minX + self.dX
@@ -164,7 +163,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
         case .pan:
             let minX: CGFloat = -view.frame.width + view.frame.width/2
             let maxX: CGFloat = superView.bounds.width - view.frame.width/2
-            let minY: CGFloat = 0
+            let minY: CGFloat = superView.safeAreaInsets.top
             let maxY: CGFloat = superView.bounds.height - navBarHeight
             return CGRect(x: min(max(minX, x), maxX),
                           y: min(max(minY, y), maxY),
