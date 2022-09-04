@@ -148,7 +148,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
         guard let superView = view.superview else { return view.frame }
         
         let x: CGFloat = view.frame.minX + self.dX
-        let y: CGFloat = max(view.frame.minY + self.dY, superView.safeAreaInsets.top)
+        let y: CGFloat = view.frame.minY + self.dY
         let w: CGFloat = view.frame.width + self.dW
         let h: CGFloat = view.frame.height + self.dH
         
@@ -163,7 +163,7 @@ public class MKFrameAdjustableViewPanAndPinchGestureRecognizer: UIGestureRecogni
         case .pan:
             let minX: CGFloat = -view.frame.width + view.frame.width/2
             let maxX: CGFloat = superView.bounds.width - view.frame.width/2
-            let minY: CGFloat = 0
+            let minY: CGFloat = 100
             let maxY: CGFloat = superView.bounds.height - navBarHeight
             return CGRect(x: min(max(minX, x), maxX),
                           y: min(max(minY, y), maxY),
