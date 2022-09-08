@@ -33,4 +33,8 @@ public extension CGRect {
         .init(x: maxX, y: maxY)
     }
 
+    static func centered(in rect: CGRect, size: CGSize) -> CGRect {
+        return .init(x: rect.midX - (size.width/2), y: rect.midY - (size.height/2), width: size.width, height: size.height)
+    }
+    
 }
