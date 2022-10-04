@@ -100,4 +100,12 @@ public extension UIView {
         self.layer.cornerRadius = cornerRadius
         self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
+    
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach { addSubview($0) }
+    }
+    
+    func addSubviews(_ subviews: [UIView]) {
+        subviews.forEach { addSubviews($0) }
+    }
 }
