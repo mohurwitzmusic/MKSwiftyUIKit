@@ -30,7 +30,7 @@ open class MKSwiftyStackFrameBuilder: MKSwiftyStackFrameBuildable {
     public enum Size {
         case automatic
         case absolute(CGFloat)
-        case fractional(CGFloat, min: CGFloat? = nil, max: CGFloat? = nil)
+        case fractional(multiplier: CGFloat, min: CGFloat? = nil, max: CGFloat? = nil)
     }
     
     public enum Component {
