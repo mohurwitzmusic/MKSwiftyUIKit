@@ -10,6 +10,38 @@ import UIKit
 
 public extension UIView {
     
+    func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, edges: UIRectEdge, insets: UIEdgeInsets = .zero) {
+        translatesAutoresizingMaskIntoConstraints = false
+        if edges.contains(.top) {
+            topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: insets.top).isActive = true
+        }
+        if edges.contains(.right) {
+            trailingAnchor.constraint(equalTo: layoutGuide.rightAnchor, constant: -insets.right).isActive = true
+        }
+        if edges.contains(.bottom) {
+            bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -insets.bottom).isActive = true
+        }
+        if edges.contains(.left) {
+            leftAnchor.constraint(equalTo: layoutGuide.leftAnchor, constant: insets.left).isActive = true
+        }
+    }
+    
+    func constrainToBounds(of view: UIView, edges: UIRectEdge, insets: UIEdgeInsets = .zero) {
+        translatesAutoresizingMaskIntoConstraints = false
+        if edges.contains(.top) {
+            topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top).isActive = true
+        }
+        if edges.contains(.right) {
+            trailingAnchor.constraint(equalTo: view.rightAnchor, constant: -insets.right).isActive = true
+        }
+        if edges.contains(.bottom) {
+            bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom).isActive = true
+        }
+        if edges.contains(.left) {
+            leftAnchor.constraint(equalTo: view.leftAnchor, constant: insets.left).isActive = true
+        }
+    }
+    
     func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero) {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
