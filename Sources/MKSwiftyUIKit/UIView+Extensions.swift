@@ -16,7 +16,7 @@ public extension UIView {
             topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: insets.top).isActive = true
         }
         if edges.contains(.right) {
-            trailingAnchor.constraint(equalTo: layoutGuide.rightAnchor, constant: -insets.right).isActive = true
+            rightAnchor.constraint(equalTo: layoutGuide.rightAnchor, constant: -insets.right).isActive = true
         }
         if edges.contains(.bottom) {
             bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -insets.bottom).isActive = true
@@ -32,7 +32,7 @@ public extension UIView {
             topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top).isActive = true
         }
         if edges.contains(.right) {
-            trailingAnchor.constraint(equalTo: view.rightAnchor, constant: -insets.right).isActive = true
+            rightAnchor.constraint(equalTo: view.rightAnchor, constant: -insets.right).isActive = true
         }
         if edges.contains(.bottom) {
             bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom).isActive = true
