@@ -146,4 +146,8 @@ public extension UIView {
         subview.constrainToLayoutGuide(layoutMarginsGuide, insets: insets)
     }
     
+    func addSubviewConstrainingToBounds(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+        self.addSubview(subview)
+        subview.constrainToBounds(of: self, insets: insets)
+    }
 }
