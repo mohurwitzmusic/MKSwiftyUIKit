@@ -140,4 +140,10 @@ public extension UIView {
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach { addSubviews($0) }
     }
+    
+    func addSubviewConstrainingToLayoutGuide(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+        self.addSubview(subview)
+        subview.constrainToLayoutGuide(layoutMarginsGuide, insets: insets)
+    }
+    
 }
