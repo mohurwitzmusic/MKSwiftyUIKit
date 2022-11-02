@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIView {
     
-    func contrainToEdges(_ edges: UIRectEdge, ofLayoutGuide layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero) {
+    func constrainToEdges(_ edges: UIRectEdge, ofLayoutGuide layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero) {
         translatesAutoresizingMaskIntoConstraints = false
         if edges.contains(.top) {
             topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: insets.top).isActive = true
