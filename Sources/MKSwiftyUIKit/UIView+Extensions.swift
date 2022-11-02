@@ -105,6 +105,7 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
+
     
     func setVerticalLayoutPriority(compression: UILayoutPriority, hugging: UILayoutPriority) {
         self.setContentCompressionResistancePriority(compression, for: .vertical)
