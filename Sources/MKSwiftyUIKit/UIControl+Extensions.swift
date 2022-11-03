@@ -14,4 +14,10 @@ public extension UIControl {
         }
     }
     
+    func replaceAction(withID id: String, with action: @escaping UIActionHandler, for event: UIControl.Event) {
+        self.removeAction(identifiedBy: .init(id), for: event)
+        let newAction = UIAction(identifier: .init(id), handler: action)
+        addAction(newAction, for: event)
+    }
+
 }
