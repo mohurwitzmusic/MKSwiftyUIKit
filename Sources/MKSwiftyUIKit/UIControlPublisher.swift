@@ -53,12 +53,12 @@ extension UIControlPublisher {
 }
 
 
-protocol ControlPublishable { }
+protocol UIControlPublishable { }
 
-extension ControlPublishable where Self : UIControl {
+extension UIControlPublishable where Self : UIControl {
     func publisher(for event: UIControl.Event) -> UIControlPublisher<Self> {
         UIControlPublisher(control: self, event: event)
     }
 }
 
-extension UIControl : ControlPublishable { }
+extension UIControl : UIControlPublishable { }
