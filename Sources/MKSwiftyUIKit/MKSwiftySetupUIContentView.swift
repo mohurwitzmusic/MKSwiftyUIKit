@@ -3,10 +3,10 @@ import UIKit
 
 /// A generic `UIContentView` for use with `UIContentConfiguration`.
 ///
-/// - Exposes `customConfiguation` as a property which contains the generic configuration type. The built in `configuration` property is then computed off this property.
+/// - Exposes `customConfiguation` as a property which contains your custom configuration type. The  `configuration` required  property is then computed off this property. **Asserts if it can't cast the new configuration to your custom `UIContentConfiguration` type.**
 /// - Do all initial setup in `setup`
-/// - Do all updates in `updateConfiguration`
-/// - Note: asserts if it can't cast the new configuration to the generic `UIContentConfiguration` type.
+/// - Do all updates in `updateConfiguration`. This will automatically be called when `configuration`is set.
+///
 
 open class MKSwiftySetupUIContentView<T: UIContentConfiguration>: UIView, UIContentView {
     

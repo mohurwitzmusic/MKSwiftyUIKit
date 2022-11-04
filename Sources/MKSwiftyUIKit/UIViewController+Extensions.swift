@@ -21,12 +21,14 @@ public extension UIViewController {
         viewController.didMove(toParent: self)
     }
     
-    func presentOKCancelAlert(title: String?, message: String, style: UIAlertController.Style = .alert, destructive: Bool, okAction: (() -> Void)?) {
+    func presentOKCancelAlert(title: String?, message: String?, style: UIAlertController.Style = .alert, destructive: Bool, okAction: (() -> Void)?, cancelAction: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style)
         let ok = UIAlertAction(title: "OK", style: destructive ? .destructive : .default) { _ in
             okAction?()
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            cancelAction?()
+        }
         alert.addAction(ok)
         alert.addAction(cancel)
         present(alert, animated: true)
