@@ -4,27 +4,27 @@ open class MKSwiftySetupUITableViewCell: UITableViewCell {
     
     private var didConfigure = false
     
-    /// Use to define the width of an accessory. `layoutSubviews` checks
-    /// to see if an `accessoryView` is set and uses `accessoryWidth` to
+    /// Use to define the size of an accessory. `layoutSubviews` checks
+    /// to see if an `accessoryView` is set and uses `accessoryLayout` to
     /// calculate its size. The view will be centered vertically.
     
-    public struct AccessoryWidth: Equatable, Sendable {
-        public var max: CGFloat?
-        public var size = Size.fractional(0.5)
-        public enum Size: Equatable, Sendable {
+    public struct AccessoryLayout: Hashable, Sendable {
+        public enum Size: Hashable, Sendable {
             case fractional(CGFloat)
             case fixed(CGFloat)
+            case automatic
         }
-        public init(size: Size = Size.fractional(0.5), max: CGFloat? = nil) {
-            self.max = max
-            self.size = size
-        }
+        public var width = Size.automatic
+        public var height = Size.automatic
+        public var maxWidth: CGFloat?
+        public var maxHeight: CGFloat?
     }
     
-    /// The width of the accessory to use during `layoutSubviews`. Setting this
+
+    /// The layout of the accessory to use during `layoutSubviews`. Setting this
     /// casuses `layoutSubviews` to be called.
     
-    open var accessoryWidth = AccessoryWidth() {
+    open var accessoryLayout = AccessoryLayout() {
         didSet {
             setNeedsLayout()
         }
@@ -46,38 +46,76 @@ open class MKSwiftySetupUITableViewCell: UITableViewCell {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        layoutAccessory()
+        layoutAccessoryIfNeeded()
     }
     
-    /// Use to provide an initial configuration. This is only called once.
+    /// Use to inject an initial configuration. This is only called once.
     
     public final func configureOnce(_ configure: @escaping () -> ()) {
         if didConfigure { return }
         didConfigure = true
         configure()
     }
-    
-    /// Lays out the `accessoryView`. Called in `layoutSubviews`.
-    
-    open func layoutAccessory() {
+        
+    private func layoutAccessoryIfNeeded() {
         guard let accessoryView else { return }
+        let width = calculateAccessoryWidth()
+        let height = calculateAccessoryHeight()
+        let x = bounds.maxX - width - directionalLayoutMargins.leading
+        let y = bounds.midY - height/2
+        accessoryView.frame = .init(x: x, y: y, width: width, height: height)
+    }
+    
+    private func calculateAccessoryWidth() -> CGFloat {
+        guard let accessoryView else { return 0 }
+        let automaticSize = accessoryView.sizeThatFits(accessoryView.frame.size)
         var width: CGFloat
-        switch accessoryWidth.size {
+        switch accessoryLayout.width {
+        case .automatic:
+            width = automaticSize.width
         case .fixed(let cGFloat):
             width = cGFloat
         case .fractional(let cGFloat):
             width = bounds.width * cGFloat
         }
-        if let max = accessoryWidth.max {
+        if let max = accessoryLayout.maxWidth {
             width = min(max, width)
         }
-        let maxWidth = bounds.width - directionalLayoutMargins.leading - directionalLayoutMargins.trailing
-        width = min(maxWidth, width)
-        let height = accessoryView.sizeThatFits(accessoryView.frame.size).height
-        accessoryView.frame = .init(x: bounds.maxX - width - directionalLayoutMargins.leading,
-                                  y: bounds.midY - height/2,
-                                 width: width,
-                                 height: height)
+        let contentViewWidth = bounds.width - directionalLayoutMargins.leading - directionalLayoutMargins.trailing
+        return min(contentViewWidth, width)
+    }
+    
+    private func calculateAccessoryHeight() -> CGFloat {
+        guard let accessoryView else { return 0 }
+        let automaticSize = accessoryView.sizeThatFits(accessoryView.frame.size)
+        var height: CGFloat
+        switch accessoryLayout.height {
+        case .automatic:
+            height = automaticSize.height
+        case .fractional(let cGFloat):
+            height = bounds.height * cGFloat
+        case .fixed(let cGFloat):
+            height = cGFloat
+        }
+        if let max = accessoryLayout.maxHeight {
+            height = min(height, max)
+        }
+        let contentViewHeight = bounds.height - 12
+        return min(contentViewHeight, height)
+    }
+    
+    /// Set the hit testing view when the cell's content manages a sub-control that should consume touches.
+    
+    open weak var hitTestingView: UIView?
+    
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard let hitTestingView else {
+            return super.hitTest(point, with: event)
+        }
+        if hitTestingView.frame.contains(point) {
+            return super.hitTest(point, with: event)
+        }
+        return nil
     }
     
 }

@@ -53,7 +53,7 @@ public extension UIListContentConfiguration {
     func secondaryTextColor(_ color: UIColor) -> Self {
         var copy = self
         copy.secondaryTextProperties.color = color
-        return self
+        return copy
     }
     
     func font(_ font: UIFont) -> Self {
@@ -71,7 +71,7 @@ public extension UIListContentConfiguration {
     func imageToTextPadding(_ padding: CGFloat) -> Self {
         var copy = self
         copy.imageToTextPadding = padding
-        return self
+        return copy
     }
     
     func layoutMargins(_ margins: NSDirectionalEdgeInsets) -> Self {
@@ -80,5 +80,35 @@ public extension UIListContentConfiguration {
         return copy
     }
     
+    func preferredSymbolConfiguration(_ config: UIImage.SymbolConfiguration) -> Self {
+        var copy = self
+        copy.imageProperties.preferredSymbolConfiguration = config
+        return copy
+    }
+    
+    func topMargin(_ margin: CGFloat) -> Self {
+        var copy = self
+        copy.directionalLayoutMargins.top = margin
+        return copy
+    }
+    
+    
+    func leadingMargin(_ margin: CGFloat) -> Self {
+        var copy = self
+        copy.directionalLayoutMargins.leading = margin
+        return copy
+    }
+    
+    func trailingMargin(_ margin: CGFloat) -> Self {
+        var copy = self
+        copy.directionalLayoutMargins.trailing = margin
+        return copy
+    }
+    
+    func bottomMargin(_ margin: CGFloat) -> Self {
+        var copy = self
+        copy.directionalLayoutMargins.bottom = margin
+        return copy
+    }
 }
 
