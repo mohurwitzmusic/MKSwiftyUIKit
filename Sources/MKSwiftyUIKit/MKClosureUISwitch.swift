@@ -1,6 +1,6 @@
 import UIKit
 
-open class ClosureUISwitch: UISwitch {
+open class MKClosureUISwitch: UISwitch {
     
     open var eventHandler: ((Bool) -> Void)?
     
