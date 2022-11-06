@@ -19,5 +19,12 @@ public extension UIControl {
         let newAction = UIAction(identifier: .init(id), handler: action)
         addAction(newAction, for: event)
     }
+    
+    @discardableResult
+    func setIsEnabled(_ enabled: Bool) -> Self {
+        self.isEnabled = enabled
+        return self
+    }
+    
 
 }

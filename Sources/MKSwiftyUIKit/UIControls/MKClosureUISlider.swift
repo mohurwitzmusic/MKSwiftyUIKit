@@ -1,6 +1,6 @@
 import UIKit
 
-open class ClosureUISlider: UISlider {
+open class MKClosureUISlider: UISlider {
     
     public enum Event: Hashable {
         case touchDown

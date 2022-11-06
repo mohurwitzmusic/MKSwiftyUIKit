@@ -18,8 +18,28 @@ public extension UILabel {
         self.font = font
     }
     
-    func setTextAndHideIfNil(_ text: String?) {
+    @discardableResult
+    func setTextAndHideIfNil(_ text: String?) -> Self {
         self.text = text
         self.isHidden = text == nil
+        return self
+    }
+    
+    @discardableResult
+    func setText(_ text: String?) -> Self {
+        self.text = text
+        return self
+    }
+    
+    @discardableResult
+    func setTextColor(_ color: UIColor) -> Self {
+        self.textColor = color
+        return self
+    }
+    
+    @discardableResult
+    func setTextAlignment(_ alignment: NSTextAlignment) -> Self {
+        self.textAlignment = alignment
+        return self
     }
 }

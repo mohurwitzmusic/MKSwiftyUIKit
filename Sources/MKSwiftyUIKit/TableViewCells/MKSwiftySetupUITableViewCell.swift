@@ -4,6 +4,19 @@ open class MKSwiftySetupUITableViewCell: UITableViewCell {
     
     private var didConfigure = false
     
+    open override var isUserInteractionEnabled: Bool {
+        didSet {
+            accessoryView?.isUserInteractionEnabled = isUserInteractionEnabled
+            if let accessoryView = accessoryView as? UIControl {
+                accessoryView.isEnabled = isUserInteractionEnabled
+            }
+            if let hitTestingView = hitTestingView as? UIControl {
+                hitTestingView.isEnabled = isUserInteractionEnabled
+                hitTestingView.isUserInteractionEnabled = isUserInteractionEnabled
+            }
+        }
+    }
+    
     /// Use to define the size of an accessory. `layoutSubviews` checks
     /// to see if an `accessoryView` is set and uses `accessoryLayout` to
     /// calculate its size. The view will be centered vertically.
@@ -109,13 +122,13 @@ open class MKSwiftySetupUITableViewCell: UITableViewCell {
     open weak var hitTestingView: UIView?
     
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard let hitTestingView else {
-            return super.hitTest(point, with: event)
+        if let hitTestingView {
+            if hitTestingView.frame.contains(point) {
+                return super.hitTest(point, with: event)
+            }
+            return nil
         }
-        if hitTestingView.frame.contains(point) {
-            return super.hitTest(point, with: event)
-        }
-        return nil
+        return super.hitTest(point, with: event)
     }
     
 }

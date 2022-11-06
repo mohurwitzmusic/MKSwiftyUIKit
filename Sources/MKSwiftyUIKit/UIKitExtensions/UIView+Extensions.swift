@@ -42,7 +42,8 @@ public extension UIView {
         }
     }
     
-    func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero) {
+    @discardableResult
+    func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: insets.left),
@@ -50,9 +51,11 @@ public extension UIView {
             trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -insets.right),
             bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -insets.bottom)
         ])
+        return self
     }
     
-    func constrainToBounds(of view: UIView, insets: UIEdgeInsets = .zero) {
+    @discardableResult
+    func constrainToBounds(of view: UIView, insets: UIEdgeInsets = .zero) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left),
@@ -60,6 +63,7 @@ public extension UIView {
             trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -insets.right),
             bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom)
         ])
+        return self
     }
     
     @discardableResult
@@ -107,14 +111,18 @@ public extension UIView {
     }
 
     
-    func setVerticalLayoutPriority(compression: UILayoutPriority, hugging: UILayoutPriority) {
+    @discardableResult
+    func setVerticalLayoutPriority(compression: UILayoutPriority, hugging: UILayoutPriority) -> Self {
         self.setContentCompressionResistancePriority(compression, for: .vertical)
         self.setContentHuggingPriority(hugging, for: .vertical)
+        return self
     }
     
-    func setHorizontalLayoutPriority(compression: UILayoutPriority, hugging: UILayoutPriority) {
+    @discardableResult
+    func setHorizontalLayoutPriority(compression: UILayoutPriority, hugging: UILayoutPriority) -> Self {
         self.setContentCompressionResistancePriority(compression, for: .horizontal)
         self.setContentHuggingPriority(hugging, for: .horizontal)
+        return self
     }
     
     convenience init(backgroundColor: UIColor) {
@@ -134,21 +142,113 @@ public extension UIView {
         self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
     
-    func addSubviews(_ subviews: UIView...) {
+    @discardableResult
+    func addSubviews(_ subviews: UIView...) -> Self {
         subviews.forEach { addSubview($0) }
+        return self
     }
     
-    func addSubviews(_ subviews: [UIView]) {
+    @discardableResult
+    func addSubviews(_ subviews: [UIView]) -> Self {
         subviews.forEach { addSubviews($0) }
+        return self
     }
     
-    func addSubviewConstrainingToLayoutGuide(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+    @discardableResult
+    func addSubviewConstrainingToLayoutGuide(_ subview: UIView, insets: UIEdgeInsets = .zero) -> Self {
         self.addSubview(subview)
         subview.constrainToLayoutGuide(layoutMarginsGuide, insets: insets)
+        return self
     }
     
-    func addSubviewConstrainingToBounds(_ subview: UIView, insets: UIEdgeInsets = .zero) {
+    @discardableResult
+    func addSubviewConstrainingToBounds(_ subview: UIView, insets: UIEdgeInsets = .zero) -> Self {
         self.addSubview(subview)
         subview.constrainToBounds(of: self, insets: insets)
+        return self
+    }
+    
+    @discardableResult
+    func setBackgroundColor( _ color: UIColor) -> Self {
+        self.backgroundColor = color
+        return self
+    }
+    
+    @discardableResult
+    func setCornerRadis(_ radius: CGFloat, corners: UIRectCorner = .allCorners) -> Self {
+        self.layer.cornerRadius = radius
+        if corners.contains(.topLeft) {
+            layer.maskedCorners.insert(.layerMinXMinYCorner)
+        }
+        if corners.contains(.topRight) {
+            layer.maskedCorners.insert(.layerMaxXMinYCorner)
+        }
+        if corners.contains(.bottomLeft) {
+            layer.maskedCorners.insert(.layerMinXMaxYCorner)
+        }
+        if corners.contains(.bottomRight) {
+            layer.maskedCorners.insert(.layerMaxXMaxYCorner)
+        }
+        return self
+    }
+    
+    @discardableResult
+    func setTintColor(_ color: UIColor) -> Self {
+        self.tintColor = color
+        return self
+    }
+    
+    @discardableResult
+    func setTag(_ tag: Int) -> Self {
+        self.tag = tag
+        return self
+    }
+    
+    @discardableResult
+    func setFrame(_ frame: CGRect) -> Self {
+        self.frame = frame
+        return self
+    }
+    
+    @discardableResult
+    func setIsUserInterctionEnabled(_ enabled: Bool) -> Self {
+        self.isUserInteractionEnabled = enabled
+        return self
+    }
+    
+    @discardableResult
+    func addAsSubview(of superview: UIView) -> Self {
+        superview.addSubview(self)
+        return self
+    }
+    
+    @discardableResult
+    func setLayoutMargins(_ margins: NSDirectionalEdgeInsets) -> Self {
+        self.directionalLayoutMargins = margins
+        return self
+    }
+    
+    @discardableResult
+    func setLeadingMargin(_ margin: CGFloat) -> Self {
+        self.directionalLayoutMargins.leading = margin
+        return self
+    }
+    
+    @discardableResult
+    func setTopMargin(_ margin: CGFloat) -> Self {
+        self.directionalLayoutMargins.top = margin
+        return self
+    }
+    
+    @discardableResult
+    func setTrailingMargin(_ margin: CGFloat) -> Self {
+        self.directionalLayoutMargins.trailing = margin
+        return self
+    }
+    
+    @discardableResult
+    func setBottomMargin(_ margin: CGFloat) -> Self {
+        self.directionalLayoutMargins.bottom = margin
+        return self
     }
 }
