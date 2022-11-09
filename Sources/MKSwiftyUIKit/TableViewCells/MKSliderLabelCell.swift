@@ -2,10 +2,10 @@ import UIKit
 
 open class MKSliderLabelCell: MKSwiftySetupUITableViewCell {
     
-    let hStack = UIStackView(axis: .horizontal, spacing: 20)
-    let slider = MKClosureUISlider()
-    let titleLabel = UILabel(text: "Title", alignment: .right)
-    let valueLabel = UILabel(text: "0.0", font: .preferredFont(forTextStyle: .caption1))
+    public let hStack = UIStackView(axis: .horizontal, spacing: 20)
+    public let slider = MKClosureUISlider()
+    public let titleLabel = UILabel(text: "Title", alignment: .right)
+    public let valueLabel = UILabel(text: "0.0", font: .preferredFont(forTextStyle: .caption1))
     
     open override func setup() {
         contentView.addSubviewConstrainingToLayoutGuide(hStack)
