@@ -7,6 +7,7 @@ open class MKTextFieldCell: MKSwiftySetupUITableViewCell {
     open override func setup() {
         contentView.addSubviewConstrainingToLayoutGuide(textField)
         hitTestingView = textField
+        selectionStyle = .none
     }
  
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

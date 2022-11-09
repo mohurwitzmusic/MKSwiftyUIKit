@@ -14,6 +14,7 @@ open class MKToggleCell: MKSwiftySetupUITableViewCell {
     open override func setup() {
         self.accessoryView = toggle
         self.hitTestingView = toggle
+        selectionStyle = .none
     }
 
 }

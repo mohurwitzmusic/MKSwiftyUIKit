@@ -15,6 +15,7 @@ open class MKSliderLabelCell: MKSwiftySetupUITableViewCell {
         valueLabel.setHorizontalLayoutPriority(compression: .defaultLow, hugging: .defaultLow)
         slider.setHorizontalLayoutPriority(compression: .required, hugging: .required)
         hitTestingView = slider
+        selectionStyle = .none
     }
 
     

@@ -11,6 +11,7 @@ open class MKPickerViewCell: MKSwiftySetupUITableViewCell {
 
     open override func setup() {
         contentView.addSubviewConstrainingToLayoutGuide(pickerView)
+        selectionStyle = .none
     }
     
     

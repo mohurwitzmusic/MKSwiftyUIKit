@@ -8,6 +8,7 @@ open class MKSliderCell: MKSwiftySetupUITableViewCell {
         contentView.addSubview(slider)
         slider.constrainToLayoutGuide(contentView.layoutMarginsGuide)
         hitTestingView = slider
+        selectionStyle = .none
     }
     
 }
