@@ -49,6 +49,11 @@ public class MKSwiftyUIBezierPathDrawer {
         return self
     }
     
+    @discardableResult public func setLineWidth(_ width: CGFloat) -> Self {
+        path.lineWidth = width
+        return self
+    }
+    
     @discardableResult public func close() -> Self {
         path.close()
         return self
