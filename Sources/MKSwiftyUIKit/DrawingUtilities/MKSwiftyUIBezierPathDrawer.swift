@@ -54,6 +54,21 @@ public class MKSwiftyUIBezierPathDrawer {
         return self
     }
     
+    @discardableResult public func setLineJoinStyle(_ style: CGLineJoin) -> Self {
+        path.lineJoinStyle = style
+        return self
+    }
+    
+    @discardableResult public func setLineCapStyle(_ style: CGLineCap) -> Self {
+        path.lineCapStyle = style
+        return self
+    }
+    
+    @discardableResult public func setMiterLimit(_ limit: CGFloat) -> Self {
+        path.miterLimit = limit
+        return self
+    }
+    
     @discardableResult public func close() -> Self {
         path.close()
         return self
