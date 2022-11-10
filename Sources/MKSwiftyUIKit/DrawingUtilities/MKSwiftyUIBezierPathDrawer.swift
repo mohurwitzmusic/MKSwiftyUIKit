@@ -79,6 +79,11 @@ public class MKSwiftyUIBezierPathDrawer {
         return self
     }
     
+    @discardableResult public func addArcAtCurrentPoint(radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, clockwise: Bool) -> Self {
+        path.addArc(withCenter: path.currentPoint, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        return self
+    }
+    
     @discardableResult public func addQuadCurve(to point: MKSwiftyUIBezierPathDrawer.Point, controlPoint: MKSwiftyUIBezierPathDrawer.Point) -> Self {
         path.addQuadCurve(to: .init(point: point), controlPoint: .init(point: controlPoint))
         return self
