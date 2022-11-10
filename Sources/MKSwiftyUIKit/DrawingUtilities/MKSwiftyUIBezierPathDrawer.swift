@@ -90,7 +90,7 @@ public class MKSwiftyUIBezierPathDrawer {
     }
 
     @discardableResult public func beginNewPath() -> Self {
-        self.path = path
+        self.path = UIBezierPath()
         return self
     }
     
