@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(*, deprecated, message: "Use MKSwiftyPathDrawer Instead")
 public class MKSwiftyUIBezierPathDrawer {
     
     public static func beginWithPath() -> MKSwiftyUIBezierPathDrawer {
@@ -40,12 +41,12 @@ public class MKSwiftyUIBezierPathDrawer {
     }
 
     @discardableResult public func move(to point: Point) -> Self {
-        path.move(to: .init(point: point))
+        path.move(to: pointToCGPoint(point))
         return self
     }
     
     @discardableResult public func addLine(to point: Point) -> Self {
-        path.addLine(to: .init(point: point))
+        path.addLine(to: pointToCGPoint(point))
         return self
     }
     
@@ -75,7 +76,8 @@ public class MKSwiftyUIBezierPathDrawer {
     }
     
     @discardableResult public func addArc(center: Point, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, clockwise: Bool) -> Self {
-        path.addArc(withCenter: .init(point: center), radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        let cgPoint = pointToCGPoint(center)
+        path.addArc(withCenter: cgPoint, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
         return self
     }
     
@@ -85,7 +87,9 @@ public class MKSwiftyUIBezierPathDrawer {
     }
     
     @discardableResult public func addQuadCurve(to point: MKSwiftyUIBezierPathDrawer.Point, controlPoint: MKSwiftyUIBezierPathDrawer.Point) -> Self {
-        path.addQuadCurve(to: .init(point: point), controlPoint: .init(point: controlPoint))
+        let cgPoint = pointToCGPoint(controlPoint)
+        let cgControlPoint = pointToCGPoint(controlPoint)
+        path.addQuadCurve(to: cgPoint, controlPoint: cgControlPoint)
         return self
     }
 
@@ -94,15 +98,7 @@ public class MKSwiftyUIBezierPathDrawer {
         return self
     }
     
-    
-}
-
-fileprivate extension CGPoint {
-    
-    init(point: MKSwiftyUIBezierPathDrawer.Point) {
-        self.init(x: point.x, y: point.y)
+    private func pointToCGPoint(_ point: Point) -> CGPoint {
+        return .init(x: point.x, y: point.y)
     }
-    
 }
-
-
