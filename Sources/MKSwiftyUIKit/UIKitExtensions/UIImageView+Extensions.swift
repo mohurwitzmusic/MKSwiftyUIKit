@@ -17,6 +17,16 @@ public extension UIImageView {
         self.preferredSymbolConfiguration = preferredSymbolConfiguration
     }
     
+    convenience init(imageSystemName: String, symbolScale: UIImage.SymbolScale = .default, tint: UIColor? = nil) {
+        self.init(frame: .zero)
+        self.contentMode = .scaleAspectFit
+        self.image = .init(systemName: imageSystemName)
+        self.preferredSymbolConfiguration = .init(scale: symbolScale)
+        if let tintColor {
+            self.tintColor = tintColor
+        }
+    }
+    
     @discardableResult
     func setImageAndHideIfNil(_ image: UIImage?) -> Self {
         self.image = image
