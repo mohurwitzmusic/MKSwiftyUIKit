@@ -20,8 +20,30 @@ public enum MKTextFieldAlertBuilder {
             self.alertController = controller
         }
         
-        public func addTextField(_ configuration: @escaping ((UITextField) -> Void)) -> Self {
-            alertController.addTextField(configurationHandler: configuration)
+        public func addTextField(_ configuration: @escaping ((UITextField) -> Void),
+                                 onEditingDidBegin: ((UITextField) -> Void)? = nil,
+                                 onEditingChanged: ((UITextField) -> Void)? = nil,
+                                 onEditingDidEnd: ((UITextField) -> Void)? = nil
+        
+        ) -> Self {
+            alertController.addTextField { textField in
+                configuration(textField)
+                if let onEditingDidBegin {
+                    textField.addAction(UIAction { action in
+                        onEditingDidBegin(action.sender as! UITextField)
+                    }, for: .editingDidBegin)
+                }
+                if let onEditingChanged {
+                    textField.addAction( UIAction { action in
+                        onEditingChanged(action.sender as! UITextField)
+                    }, for: .editingChanged)
+                }
+                if let onEditingDidEnd {
+                    textField.addAction( UIAction { action in
+                        onEditingDidEnd(action.sender as! UITextField)
+                    }, for: .editingDidEnd)
+                }
+            }
             return self
         }
         
