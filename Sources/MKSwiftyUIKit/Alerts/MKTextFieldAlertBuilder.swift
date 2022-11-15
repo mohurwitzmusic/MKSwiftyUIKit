@@ -2,7 +2,7 @@ import UIKit
 
 extension UIAlertController {
     
-    public static func textFieldAlert(title: String, message: String) -> MKTextFieldAlertBuilder.AddTextFieldStep {
+    public static func textFieldAlert(title: String?, message: String?) -> MKTextFieldAlertBuilder.AddTextFieldStep {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         return MKTextFieldAlertBuilder.AddTextFieldStep(controller: alertVC)
     }
