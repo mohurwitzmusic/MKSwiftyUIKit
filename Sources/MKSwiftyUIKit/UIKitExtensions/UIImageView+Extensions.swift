@@ -22,8 +22,8 @@ public extension UIImageView {
         self.contentMode = .scaleAspectFit
         self.image = .init(systemName: imageSystemName)
         self.preferredSymbolConfiguration = .init(scale: symbolScale)
-        if let tintColor {
-            self.tintColor = tintColor
+        if let tint {
+            self.tintColor = tint
         }
     }
     
