@@ -1,6 +1,9 @@
 import UIKit
 
-open class ClosureUIButton: UIButton {
+@available(*, deprecated, renamed: "MKClosureUIButton")
+public typealias ClosureUIButton = MKClosureUIButton
+
+open class MKClosureUIButton: UIButton {
     
     public enum Event: Hashable {
         case touchDown
