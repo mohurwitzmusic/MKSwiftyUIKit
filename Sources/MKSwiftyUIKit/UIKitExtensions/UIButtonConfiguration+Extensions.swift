@@ -18,7 +18,7 @@ public extension UIButton.Configuration {
     func withImage(systemName: String) -> Self {
         var copy = self
         copy.image = .init(systemName: systemName)
-        return self
+        return copy
     }
     
     func withBaseForegroundColor(_ color: UIColor) -> Self {
