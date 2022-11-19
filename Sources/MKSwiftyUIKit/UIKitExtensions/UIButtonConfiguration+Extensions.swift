@@ -21,6 +21,12 @@ public extension UIButton.Configuration {
         return copy
     }
     
+    func withImagePlacement(_ placement: NSDirectionalRectEdge) -> Self {
+        var copy = self
+        copy.imagePlacement = placement
+        return copy
+    }
+    
     func withBaseForegroundColor(_ color: UIColor) -> Self {
         var copy = self
         copy.baseForegroundColor = color
