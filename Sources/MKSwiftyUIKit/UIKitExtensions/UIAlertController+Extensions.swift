@@ -25,6 +25,8 @@ public extension UIAlertController {
         return self
     }
     
+    
+    @available(*, deprecated, message: "Use MKTextFieldAlertBuilder instead")
     @discardableResult
     func textField(_ configurationHandler: @escaping ((UITextField) -> Void),
                    onEditingDidEnd: ((UITextField) -> ())?,

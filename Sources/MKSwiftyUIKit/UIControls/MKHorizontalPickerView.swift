@@ -49,7 +49,6 @@ internal class MKHorizontalPickerView: UIView {
         pickerView.reloadComponent(component)
     }
     
-    
     internal func selectRow(_ row: Int, inComponent component: Int, animated: Bool) {
         pickerView.selectRow(row, inComponent: component, animated: animated)
     }

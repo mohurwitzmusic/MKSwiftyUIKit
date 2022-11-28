@@ -99,17 +99,3 @@ public extension UITextField {
     }
 }
 
-fileprivate class ImageLeftView: MKSwiftySetupUIView {
-    
-    let hStack = UIStackView(axis: .horizontal)
-    let leadingSpacer = UIView()
-    let trailingSpacer = UIView()
-    let imageView = UIImageView(contentMode: .scaleAspectFit)
-    var leadingSpaceWidthConstraint: NSLayoutConstraint?
-    var trailingSpacerWidthConstrain: NSLayoutConstraint?
-    
-    override func setup() {
-        
-    }
-    
-}
