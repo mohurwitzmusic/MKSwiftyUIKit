@@ -22,5 +22,6 @@ open class MKSwiftySetupUIView: UIView {
     
     open func setup() { }
     
-    
 }
+
+
