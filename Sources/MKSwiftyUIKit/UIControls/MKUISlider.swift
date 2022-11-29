@@ -26,6 +26,8 @@ open class MKUISlider: UISlider {
         addTarget(self, action: #selector(_onTouchUp), for: .touchUpOutside)
     }
     
+    private func foo() { }
+    
     @objc private func _onValueChanged() {
         valueChangedHandler?(self)
     }
