@@ -15,15 +15,17 @@ open class MKUIBarButton: UIBarButtonItem {
     }
     
     @discardableResult
-    public func onObjectWillChange<T: ObservableObject>(_ object: T, handler: @escaping ((T, MKUIBarButton) -> Void)) -> Self {
+    public func onObjectWillChange<T: ObservableObject>(_ object: T, applyImmediately: Bool = true, handler: @escaping ((T, MKUIBarButton) -> Void)) -> Self {
         self.observedObject = object.objectWillChange
             .sink { [weak self, weak object] _ in
                 guard let self, let object else { return }
                 handler(object, self)
             }
+        if applyImmediately {
+            handler(object, self)
+        }
         return self
     }
     
  
 }
-

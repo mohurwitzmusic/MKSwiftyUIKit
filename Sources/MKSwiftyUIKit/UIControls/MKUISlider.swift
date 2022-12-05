@@ -98,11 +98,14 @@ public extension MKUISlider {
     }
     
     @discardableResult
-    func onObjectWillChange<T: ObservableObject>(_ object: T, handler: @escaping ((T, MKUISlider) -> Void)) -> Self {
+    func onObjectWillChange<T: ObservableObject>(_ object: T, applyImmediately: Bool = true, handler: @escaping ((T, MKUISlider) -> Void)) -> Self {
         observedObject = object.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak object, weak self] _ in
             guard let object, let self else { return }
+            handler(object, self)
+        }
+        if applyImmediately {
             handler(object, self)
         }
         return self
