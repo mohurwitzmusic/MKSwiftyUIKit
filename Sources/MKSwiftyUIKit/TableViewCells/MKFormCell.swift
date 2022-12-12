@@ -129,23 +129,6 @@ open class MKFormCell: UITableViewCell {
 
 public extension MKFormCell {
     
-    convenience init(title: String, subtitle: String? = nil, systemImage: String? = nil) {
-        self.init(style: .default, reuseIdentifier: nil)
-        self.contentConfiguration = self.defaultContentConfiguration()
-            .withText(title)
-            .withSecondaryText(subtitle ?? "")
-            .withImage(systemName: systemImage ?? "")
-    }
-    
-    convenience init(title: String, subtitle: String? = nil, image: UIImage? = nil) {
-        self.init(style: .default, reuseIdentifier: nil)
-        self.contentConfiguration = self.defaultContentConfiguration()
-            .withText(title)
-            .withSecondaryText(subtitle ?? "")
-            .withImage(image)
-    }
-    
-    
     @available(*, unavailable, renamed: "MKFormCell.init(title:subtitle:systemImage:)")
     convenience init(title: String, subtitle: String? = nil, imageSystemName: String? = nil) {
         self.init(title: title, subtitle: subtitle, systemImage: imageSystemName)

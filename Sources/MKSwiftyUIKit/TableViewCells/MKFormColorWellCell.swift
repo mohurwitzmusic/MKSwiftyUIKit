@@ -17,8 +17,8 @@ open class MKFormColorWellCell: MKFormCell {
     }
     
 
-    convenience init(title: String, subtitle: String? = nil, systemImage: String? = nil, supportsAlpha: Bool = false) {
-        self.init(title: title, subtitle: subtitle, systemImage: systemImage)
+    convenience init(configuration: UIListContentConfiguration? = nil, title: String, subtitle: String? = nil, systemImage: String? = nil, supportsAlpha: Bool = false) {
+        self.init(configuration: configuration, title: title, subtitle: subtitle, systemImage: systemImage)
         self.colorWell.supportsAlpha = supportsAlpha
     }
     
