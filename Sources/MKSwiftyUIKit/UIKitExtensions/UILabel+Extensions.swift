@@ -18,16 +18,19 @@ public extension UILabel {
         self.font = font
     }
     
+    
+    @available(*, deprecated, renamed: "UILabel.setText(_:hideIfNil:)")
     @discardableResult
     func setTextAndHideIfNil(_ text: String?) -> Self {
-        self.text = text
-        self.isHidden = text == nil
-        return self
+        self.setText(text, hideIfNil: text == nil)
     }
     
     @discardableResult
-    func setText(_ text: String?) -> Self {
+    func setText(_ text: String?, hideIfNil: Bool = false) -> Self {
         self.text = text
+        if hideIfNil && text == nil {
+            self.isHidden = true
+        }
         return self
     }
     

@@ -10,8 +10,6 @@ open class MKUIButton: UIButton {
     open var touchUpInsideHandler: ((MKUIButton) -> Void)?
     open var touchUpOutsideHandler: ((MKUIButton) -> Void)?
     open var touchDownRepeatHandler: ((MKUIButton) -> Void)?
-    open var observedObject: AnyCancellable?
-    
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -115,18 +113,5 @@ public extension MKUIButton {
         }
         return self
     }
-    
-    @discardableResult
-    func onObjectWillChange<T: ObservableObject>(_ object: T, applyImmediately: Bool = true, handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        observedObject = object.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak object, weak self] _ in
-            guard let object, let self else { return }
-            handler(object, self)
-        }
-        if applyImmediately {
-            handler(object, self)
-        }
-        return self
-    }
+
 }

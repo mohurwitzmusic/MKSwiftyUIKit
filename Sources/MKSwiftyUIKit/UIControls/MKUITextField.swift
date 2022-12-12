@@ -9,7 +9,6 @@ open class MKUITextField: UITextField, UITextFieldDelegate {
     public var textFieldDidEndEditingHandler: ((MKUITextField) -> Void)?
     public var textFieldDidBeginEditingHandler: ((MKUITextField) -> Void)?
     public var editingChangedHandler: ((MKUITextField) -> Void)?
-    public var observedObject: AnyCancellable?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -145,20 +144,6 @@ public extension MKUITextField {
         self.editingChangedHandler = { [weak target] textField in
             guard let target else { return }
             handler(target, textField)
-        }
-        return self
-    }
-    
-    @discardableResult
-    func onObjectWillChange<T: ObservableObject>(_ object: T, applyImmediately: Bool = true, handler: @escaping ((T, MKUITextField) -> Void)) -> Self {
-        self.observedObject = object.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak object, weak self] _ in
-                guard let object, let self else { return }
-                handler(object, self)
-            }
-        if applyImmediately {
-            handler(object, self)
         }
         return self
     }

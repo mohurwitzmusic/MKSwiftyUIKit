@@ -8,7 +8,6 @@ open class MKPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
     open var titleForRowForComponentHandler: ((MKPickerView, Int, Int) -> String?)?
     open var rowSelectionHandler: ((MKPickerView, Int, Int) -> ())?
     open var rowHeightForComponentHandler: ((MKPickerView, Int) -> CGFloat)?
-    open var observedObject: AnyCancellable?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -126,20 +125,6 @@ public extension MKPickerView {
     @discardableResult
     func onHeightForRowForComponent(_ handler: ((MKPickerView, Int) -> CGFloat)?) -> Self {
         self.rowHeightForComponentHandler = handler
-        return self
-    }
-    
-    @discardableResult
-    func onObjectWillChange<T: ObservableObject>(_ object: T, applyImmediately: Bool = true, handler: @escaping ((T, MKPickerView) -> Void)) -> Self {
-        observedObject = object.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak object, weak self] _ in
-            guard let object, let self else { return }
-            handler(object, self)
-        }
-        if applyImmediately {
-            handler(object, self)
-        }
         return self
     }
     
