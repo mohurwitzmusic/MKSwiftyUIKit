@@ -127,16 +127,6 @@ open class MKFormCell: UITableViewCell {
     
 }
 
-public extension MKFormCell {
-    
-    @available(*, unavailable, renamed: "MKFormCell.init(title:subtitle:systemImage:)")
-    convenience init(title: String, subtitle: String? = nil, imageSystemName: String? = nil) {
-        self.init(title: title, subtitle: subtitle, systemImage: imageSystemName)
-    }
-
-}
-
-
 
 
 

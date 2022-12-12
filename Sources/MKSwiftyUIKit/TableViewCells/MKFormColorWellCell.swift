@@ -16,12 +16,6 @@ open class MKFormColorWellCell: MKFormCell {
         colorWell.addTarget(self, action: #selector(_colorWellValueChanged), for: .valueChanged)
     }
     
-
-    convenience init(configuration: UIListContentConfiguration? = nil, title: String, subtitle: String? = nil, systemImage: String? = nil, supportsAlpha: Bool = false) {
-        self.init(configuration: configuration, title: title, subtitle: subtitle, systemImage: systemImage)
-        self.colorWell.supportsAlpha = supportsAlpha
-    }
-    
     @objc private func _colorWellValueChanged() {
         guard let color = colorWell.selectedColor else { return }
         if let lastSentColor, lastSentColor.isAlmostEqual(to: color) { return }
@@ -32,6 +26,12 @@ open class MKFormColorWellCell: MKFormCell {
 }
 
 public extension MKFormColorWellCell {
+    
+    @discardableResult
+    func setSupportsAlpha(_ supportsAlpha: Bool) -> Self {
+        self.colorWell.supportsAlpha = supportsAlpha
+        return self
+    }
     
     @discardableResult
     func onColorWellValueChanged<T: AnyObject>(target: T, handler: @escaping ((T, MKFormColorWellCell) -> Void)) -> Self {
