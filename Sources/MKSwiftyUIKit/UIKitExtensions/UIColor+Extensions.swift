@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by MOH on 2022-06-21.
-//
-
 import UIKit
 
 public extension UIColor {
@@ -44,7 +37,6 @@ public extension UIColor {
         let rgb = self.getRGB()
         return rgb.r.isAlmostEqual(to: rgb.g) &&
         rgb.g.isAlmostEqual(to: rgb.b)
-        
     }
     
     func isAlmostEqualTo(_ otherColor: UIColor, delta: CGFloat) -> Bool {
