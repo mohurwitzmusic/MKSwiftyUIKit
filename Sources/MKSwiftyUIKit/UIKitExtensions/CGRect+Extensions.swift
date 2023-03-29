@@ -41,24 +41,41 @@ public extension CGRect {
         return 2 * (width + height)
     }
     
-    static func pinnedToCorner(_ corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0)) -> CGRect {
+    static func pinnedToCorner(_ corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
+        
         var x: CGFloat = 0
         var y: CGFloat = 0
+        var newSize = size
+        
+        if constrainToBounds {
+            let maxWidth = bounds.width - insets.x
+            let maxHeight = bounds.height - insets.y
+            let aspectRatio = size.width / size.height
+            if maxWidth < size.width || maxHeight < size.height {
+                let width = min(maxWidth, size.width)
+                let height = min(maxHeight, size.height)
+                if width / height > aspectRatio {
+                    newSize = CGSize(width: height * aspectRatio, height: height)
+                } else {
+                    newSize = CGSize(width: width, height: width / aspectRatio)
+                }
+            }
+        }
         
         if corner.contains(.topLeft) {
             x = insets.x
             y = insets.y
         } else if corner.contains(.topRight) {
-            x = bounds.width - size.width - insets.x
+            x = bounds.width - newSize.width - insets.x
             y = insets.y
         } else if corner.contains(.bottomLeft) {
             x = insets.x
-            y = bounds.height - size.height - insets.y
+            y = bounds.height - newSize.height - insets.y
         } else if corner.contains(.bottomRight) {
-            x = bounds.width - size.width - insets.x
-            y = bounds.height - size.height - insets.y
+            x = bounds.width - newSize.width - insets.x
+            y = bounds.height - newSize.height - insets.y
         }
-        return .init(x: x, y: y, width: size.width, height: size.height)
+        return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
  
     static func pinnedToEdge(_ edge: UIRectEdge, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
