@@ -32,9 +32,17 @@ public extension CGRect {
     var bottomRight: CGPoint {
         .init(x: maxX, y: maxY)
     }
+    
+    var area: CGFloat {
+        width * height
+    }
 
     static func centered(in rect: CGRect, size: CGSize) -> CGRect {
         return .init(x: rect.midX - (size.width/2), y: rect.midY - (size.height/2), width: size.width, height: size.height)
+    }
+    
+    var perimeter: CGFloat {
+        return 2 * (width + height)
     }
     
 }

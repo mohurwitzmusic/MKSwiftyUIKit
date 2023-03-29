@@ -27,12 +27,14 @@ public extension UIImageView {
         }
     }
     
+    
+    @available(*, deprecated, message: "Use setImage(_:hidingIfNil) instead")
     @discardableResult
     func setImageAndHideIfNil(_ image: UIImage?) -> Self {
-        self.image = image
-        self.isHidden = image == nil
-        return self
+        self.setImage(image, hidingIfNil: true)
     }
+    
+    /// Fluent API for setting the `image` to a system image.
     
     @discardableResult
     func setImage(systemName: String) -> Self {
@@ -40,11 +42,26 @@ public extension UIImageView {
         return self
     }
     
+    /// Fluent API for setting the `image`, optionally hiding the view if `image` is `nil`.
+    
     @discardableResult
-    func setSymbolScale(_ scale: UIImage.SymbolScale) -> Self {
-        self.preferredSymbolConfiguration = .init(scale: scale)
+    func setImage(_ image: UIImage?, hidingIfNil: Bool = false) -> Self {
+        self.image = image
+        if hidingIfNil {
+            isHidden = image == nil
+        }
         return self
     }
+    
+    /// Fluent API for setting the image's `preferredSymbolConfiguration`.
+    
+    @discardableResult
+    func setPreferredSymbolConfiguration(_ configuration: UIImage.SymbolConfiguration) -> Self {
+        self.preferredSymbolConfiguration = configuration
+        return self
+    }
+    
+    /// Fluent API for setting the image's `contentMode`.
     
     @discardableResult
     func setContentMode(_ mode: ContentMode) -> Self {

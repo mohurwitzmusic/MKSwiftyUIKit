@@ -4,24 +4,31 @@ import Combine
 open class MKUISlider: UISlider {
     
     open var valueChangedHandler: ((MKUISlider) -> Void)?
-    open var touchesBeganHandler: ((MKUISlider) -> Void)?
-    open var touchesEndedHandler: ((MKUISlider) -> Void)?
+    open var touchDownHandler: ((MKUISlider) -> Void)?
+    open var touchUpInsideHandler: ((MKUISlider) -> Void)?
+    open var touchUpOutsideHandler: ((MKUISlider) -> Void)?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _privateSetup()
         setup()
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
+        _privateSetup()
         setup()
     }
     
-    open func setup() {
+    private func _privateSetup() {
         addTarget(self, action: #selector(_onValueChanged), for: .valueChanged)
         addTarget(self, action: #selector(_onTouchDown), for: .touchDown)
-        addTarget(self, action: #selector(_onTouchUp), for: .touchUpInside)
-        addTarget(self, action: #selector(_onTouchUp), for: .touchUpOutside)
+        addTarget(self, action: #selector(_onTouchUpInside), for: .touchUpInside)
+        addTarget(self, action: #selector(_onTouchUpOutside), for: .touchUpOutside)
+    }
+    
+    open func setup() {
+
     }
         
     @objc private func _onValueChanged() {
@@ -29,11 +36,15 @@ open class MKUISlider: UISlider {
     }
     
     @objc private func _onTouchDown() {
-        touchesBeganHandler?(self)
+        touchDownHandler?(self)
     }
     
-    @objc private func _onTouchUp() {
-        touchesEndedHandler?(self)
+    @objc private func _onTouchUpInside() {
+        touchUpInsideHandler?(self)
+    }
+    
+    @objc private func _onTouchUpOutside() {
+        touchUpOutsideHandler?(self)
     }
     
 }
@@ -41,57 +52,45 @@ open class MKUISlider: UISlider {
 
 public extension MKUISlider {
     
-    @discardableResult
-    func configure<T: AnyObject>(target: T, _ handler: ((T, MKUISlider) -> Void)) -> Self {
-        handler(target, self)
-        return self
-    }
+  
+    /// Fluent API for setting `valueChangedHandler(_:)`.
     
     @discardableResult
     func onValueChanged(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
         valueChangedHandler = handler
         return self
     }
-    
+
+    /// Fluent API for setting `touchDownHandler(_:)`.
+
     @discardableResult
-    func onValueChanged<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUISlider) -> Void)) -> Self {
-        valueChangedHandler = { [weak target] slider in
-            if let target {
-                handler(target, slider)
-            }
-        }
+    func onTouchDown(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
+        touchDownHandler = handler
         return self
     }
     
+    /// Fluent API for setting `touchUpInsideHandler(_:)`.
+
     @discardableResult
-    func onTouchesBegan(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
-        touchesBeganHandler = handler
+    func onTouchUpInside(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
+        touchUpInsideHandler = handler
         return self
     }
     
+    /// Fluent API for setting `touchUpOutsideHandler(_:)`.
+
     @discardableResult
-    func onTouchesBegan<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUISlider) -> Void)) -> Self {
-        touchesBeganHandler = { [weak target] slider in
-            if let target {
-                handler(target, slider)
-            }
-        }
+    func onTouchUpOutside(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
+        touchUpOutsideHandler = handler
         return self
     }
     
-    @discardableResult
-    func onTouchesEnded(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
-        touchesEndedHandler = handler
-        return self
-    }
+    /// Fluent API for setting both `touchUpInsideHandler(_:)` and `touchUpOutsideHandler(_:)` to the same handler.
     
     @discardableResult
-    func onTouchesEnded<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUISlider) -> Void)) -> Self {
-        touchesEndedHandler = { [weak target] slider in
-            if let target {
-                handler(target, slider)
-            }
-        }
+    func onTouchUpInsideOutside(_ handler: @escaping ((MKUISlider) -> Void)) -> Self {
+        touchUpInsideHandler = handler
+        touchUpOutsideHandler = handler
         return self
     }
 

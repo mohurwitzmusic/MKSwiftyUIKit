@@ -84,41 +84,14 @@ public extension MKPickerView {
     }
     
     @discardableResult
-    func onNumberOfRowsInComponent<T: AnyObject>(target: T, _ handler: @escaping ((T, MKPickerView, Int) -> Int)) -> Self {
-        self.numberOfRowsInComponentHandler = { [weak target] picker, component in
-            guard let target else { return 0 }
-            return handler(target, self, component)
-        }
-        return self
-    }
-    
-    @discardableResult
     func onTitleForRowForComponent(_ handler: ((MKPickerView, Int, Int) -> String?)?) -> Self {
         self.titleForRowForComponentHandler = handler
         return self
     }
     
     @discardableResult
-    func onTitleForRowForComponent<T: AnyObject>(target: T, _ handler: @escaping ((T, MKPickerView, Int, Int) -> String?)) -> Self {
-        self.titleForRowForComponentHandler = { [weak target] picker, component, row in
-            guard let target else { return nil }
-            return handler(target, picker, row, component)
-        }
-        return self
-    }
-    
-    @discardableResult
     func onDidSelectRow(_ handler: ((MKPickerView, Int, Int) -> ())?) -> Self {
         self.rowSelectionHandler = handler
-        return self
-    }
-    
-    @discardableResult
-    func onDidSelectRow<T: AnyObject>(target: T, _ handler: @escaping ((T, MKPickerView, Int, Int) -> Void)) -> Self {
-        self.rowSelectionHandler = { [weak target] picker, row, component in
-            guard let target else { return }
-            handler(target, picker, row, component)
-        }
         return self
     }
     

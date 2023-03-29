@@ -1,45 +1,74 @@
 import UIKit
 
 @available(iOS 15, *)
-open class MKFormColorMenuCell : MKFormCell {
+public struct MKColorMenuCellViewModel: Equatable {
+    public var color = UIColor.gray
+    public var menuItems: [MKColorMenuCell.MenuItem] = []
+    public var contentConfiguration = UIListContentConfiguration.cell()
+    public var isEnabled = true
+    public mutating func selectClosestColor(to color: UIColor) {
+        self.color = menuItems.closestColor(to: color)
+    }
+    public init() { }
+}
+
+@available(iOS 15, *)
+open class MKColorMenuCell : MKFormCell {
     
     public struct MenuItem: Equatable {
-        let name: String
-        let color: UIColor
+        public let name: String
+        public let color: UIColor
         public init(name: String, color: UIColor) {
             self.name = name
             self.color = color
         }
     }
-    
-    private let menuButton = UIButton(configuration: .plain())
+
+    open var menuButton = UIButton(configuration: .plain())
     open var selectionHandler: ((UIColor) -> Void)?
-    open var menuItems = [MenuItem]()
-    open var selectedColor: UIColor = .gray
+    open var menuItems = [MenuItem]() {
+        didSet {
+            updateMenu()
+        }
+    }
+    open var selectedColor: UIColor = .gray {
+        didSet {
+            updateMenu()
+        }
+    }
     
-    @discardableResult
-    open func selectClosestMenuColor(to color: UIColor) -> UIColor {
-        let index = menuItems.map { $0.color }.firstIndex(closestTo: color)
-        guard index < menuItems.count else { return color }
-        selectedColor = menuItems[index].color
-        return selectedColor
+    open func selectClosestMenuColor(to color: UIColor) {
+        selectedColor = menuItems.closestColor(to: color)
     }
 
-    public required init?(coder: NSCoder) {
-        fatalError()
+    open func refresh(viewModel: MKColorMenuCellViewModel) {
+        self.selectedColor = viewModel.color
+        menuItems = viewModel.menuItems
+        contentConfiguration = viewModel.contentConfiguration
+        isUserInteractionEnabled = viewModel.isEnabled
+        menuButton.isEnabled = viewModel.isEnabled
     }
     
+    
+    open override func setup() {
+        selectionStyle = .none
+        configureMenuButton()
+    }
+
     private func configureMenuButton() {
         menuButton.configuration?.image = .init(systemName: "circle.fill")
         selectionStyle = .none
         accessoryView = menuButton
-        menuButton.isUserInteractionEnabled = true
         menuButton.showsMenuAsPrimaryAction = true
         accessoryLayout.width = .fixed(27)
     }
     
     open override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
+        updateMenu()
+    }
+    
+    private func updateMenu() {
         menuButton.configuration?.baseForegroundColor = selectedColor
         let menuActions = menuItems.map { menuItem in
             menuItem.menuAction { [weak self] color in
@@ -50,11 +79,10 @@ open class MKFormColorMenuCell : MKFormCell {
         }
         menuButton.menu = .init(title: "Color", children: menuActions)
     }
-    
 }
 
 @available(iOS 15, *)
-public extension MKFormColorMenuCell.MenuItem {
+public extension MKColorMenuCell.MenuItem {
     static let systemGray = Self(name: "Gray", color: .systemGray)
     static let systemRed = Self(name: "Red", color: .systemRed)
     static let systemPink = Self(name: "Pink", color: .systemPink)
@@ -71,7 +99,7 @@ public extension MKFormColorMenuCell.MenuItem {
 }
 
 @available(iOS 15, *)
-public extension Array where Element == MKFormColorMenuCell.MenuItem {
+public extension Array where Element == MKColorMenuCell.MenuItem {
     static func systemRainbow() -> [Element] {[
         .systemGray,
         .systemRed,
@@ -87,10 +115,16 @@ public extension Array where Element == MKFormColorMenuCell.MenuItem {
         .systemIndigo,
         .systemPurple
     ]}
+    
+    func closestColor(to color: UIColor) -> UIColor {
+        let index = self.map { $0.color }.firstIndex(closestTo: color)
+        guard index < self.count else { return color }
+        return self[index].color
+    }
 }
 
 @available(iOS 15, *)
-fileprivate extension MKFormColorMenuCell.MenuItem {
+fileprivate extension MKColorMenuCell.MenuItem {
     
     func menuAction(handler: ((UIColor) -> ())?) -> UIAction {
         let image = UIImage(systemName: "circle.fill")?
@@ -101,5 +135,4 @@ fileprivate extension MKFormColorMenuCell.MenuItem {
         }
     }
 }
-
 

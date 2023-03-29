@@ -1,32 +1,39 @@
 import UIKit
 import Combine
 
-@available(*, deprecated, renamed: "MKClosureUIButton")
+@available(*, deprecated, renamed: "MKUIButton")
 public typealias ClosureUIButton = MKUIButton
 
 open class MKUIButton: UIButton {
     
+    private var timeSinceLastTouchUp: Date?
     open var touchDownHandler: ((MKUIButton) -> Void)?
     open var touchUpInsideHandler: ((MKUIButton) -> Void)?
     open var touchUpOutsideHandler: ((MKUIButton) -> Void)?
     open var touchDownRepeatHandler: ((MKUIButton) -> Void)?
+    /// Similar to `touchDownRepeat` but the event is sent on touch up.
+    open var touchUpRepeatHandler: ((MKUIButton) -> Void)?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        privateSetup()
         setup()
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
+        privateSetup()
         setup()
     }
     
-    open func setup() {
+    private func privateSetup() {
         addTarget(self, action: #selector(_onTouchDown), for: .touchDown)
         addTarget(self, action: #selector(_onTouchUpOutside), for: .touchUpOutside)
         addTarget(self, action: #selector(_onTouchUpInside), for: .touchUpInside)
         addTarget(self, action: #selector(_onTouchDownRepeat), for: .touchDownRepeat)
     }
+    
+    open func setup() { }
     
     @objc private func _onTouchDown() {
         touchDownHandler?(self)
@@ -44,30 +51,29 @@ open class MKUIButton: UIButton {
         touchDownRepeatHandler?(self)
     }
     
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        if let timeSinceLastTouchUp,
+           Date().timeIntervalSince(timeSinceLastTouchUp) < 0.333 {
+            touchUpRepeatHandler?(self)
+        }
+        timeSinceLastTouchUp = Date()
+    }
+    
 }
 
 public extension MKUIButton {
     
-    @discardableResult
-    func configure<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        handler(target, self)
-        return self
-    }
+    /// Fluent API for setting `touchDownHandler(_:)`.
     
+
     @discardableResult
     func onTouchDown(_ handler: @escaping ((MKUIButton) -> Void)) -> Self {
         touchDownHandler = handler
         return self
     }
     
-    @discardableResult
-    func onTouchDown<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        touchDownHandler = { [weak target] button in
-            guard let target else { return }
-            handler(target, button)
-        }
-        return self
-    }
+    /// Fluent API for setting `touchUpInsideHandler(_:)`.
     
     @discardableResult
     func onTouchUpInside(_ handler: @escaping ((MKUIButton) -> Void)) -> Self {
@@ -75,14 +81,7 @@ public extension MKUIButton {
         return self
     }
     
-    @discardableResult
-    func onTouchUpInside<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        touchUpInsideHandler = { [weak target] button in
-            guard let target else { return }
-            handler(target, button)
-        }
-        return self
-    }
+    /// Fluent API for setting `touchUpOutsideHandler(_:)`.
     
     @discardableResult
     func onTouchUpOutside(_ handler: @escaping ((MKUIButton) -> Void)) -> Self {
@@ -90,14 +89,7 @@ public extension MKUIButton {
         return self
     }
     
-    @discardableResult
-    func onTouchUpOutside<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        touchUpOutsideHandler = { [weak target] button in
-            guard let target else { return }
-            handler(target, button)
-        }
-        return self
-    }
+    /// Fluent API for setting `touchDownRepeatHandler(_:)`.
     
     @discardableResult
     func onTouchDownRepeat(_ handler: @escaping ((MKUIButton) -> Void)) -> Self {
@@ -105,13 +97,12 @@ public extension MKUIButton {
         return self
     }
     
+    /// Fluent API for setting `touchUpRepeatHandler(_:)`.
+    
     @discardableResult
-    func onTouchDownRepeat<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUIButton) -> Void)) -> Self {
-        touchDownRepeatHandler = { [weak target] button in
-            guard let target else { return }
-            handler(target, button)
-        }
+    func onTouchUpRepeat(_ handler: @escaping ((MKUIButton) -> Void)) -> Self {
+        touchUpRepeatHandler = handler
         return self
     }
-
+    
 }

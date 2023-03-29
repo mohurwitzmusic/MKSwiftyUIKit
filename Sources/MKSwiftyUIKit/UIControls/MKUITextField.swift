@@ -12,18 +12,22 @@ open class MKUITextField: UITextField, UITextFieldDelegate {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _privateSetup()
         setup()
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
+        _privateSetup()
         setup()
     }
     
-    open func setup() {
+    private func _privateSetup() {
         delegate = self
         addTarget(self, action: #selector(_editingChanged), for: .editingChanged)
     }
+    
+    open func setup() { }
     
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let handler = textFieldShouldReturnHandler {
@@ -55,11 +59,7 @@ open class MKUITextField: UITextField, UITextFieldDelegate {
 
 public extension MKUITextField {
     
-    @discardableResult
-    func configure<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Void)) -> Self {
-        handler(target, self)
-        return self
-    }
+    /// Fluent API fot setting `textFieldShouldReturn(_:)` handler.
     
     @discardableResult
     func onTextFieldShouldReturn(_ handler: @escaping ((MKUITextField) -> Bool)) -> Self {
@@ -67,32 +67,15 @@ public extension MKUITextField {
         return self
     }
     
-    @discardableResult
-    func onTextFieldShouldReturn<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Bool)) -> Self {
-        textFieldShouldReturnHandler = { [weak target] textField in
-            guard let target else {
-                textField.resignFirstResponder()
-                return true
-            }
-            return handler(target, textField)
-        }
-        return self
-    }
+    /// Fluent API fot setting `textFieldShouldEndEditingHandler(_:)` handler.
     
     @discardableResult
     func onTextFieldShouldEndEditing(_ handler: @escaping ((MKUITextField) -> Bool)) -> Self {
         self.textFieldShouldEndEditingHandler = handler
         return self
     }
-    
-    @discardableResult
-    func onTextFieldShouldEndEditing<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Bool)) -> Self {
-        textFieldShouldEndEditingHandler = { [weak target] textField in
-            guard let target else { return true }
-            return handler(target, textField)
-        }
-        return self
-    }
+
+    /// Fluent API fot setting `textFieldShouldChandeCharactersInRangeHandler(_:)` handler.
     
     @discardableResult
     func onTextFieldShouldChangeCharactersInRange(_ handler: @escaping  ((MKUITextField, NSRange, String) -> Bool)) -> Self {
@@ -100,14 +83,7 @@ public extension MKUITextField {
         return self
     }
     
-    @discardableResult
-    func onTextFieldShouldChangeCharactersInRange<T: AnyObject>(target: T, _ handler: @escaping  ((T, MKUITextField, NSRange, String) -> Bool)) -> Self {
-        textFieldShouldChangeCharactersInRangeHandler = { [weak target] textField, range, string in
-            guard let target else { return true }
-            return handler(target, textField, range, string)
-        }
-        return self
-    }
+    /// Fluent API fot setting `textFieldDidEndEditingHandler(_:)` handler.
     
     @discardableResult
     func onTextFieldDidEndEditing(_ handler: @escaping ((MKUITextField) -> Void)) -> Self {
@@ -115,36 +91,12 @@ public extension MKUITextField {
         return self
     }
     
-    @discardableResult
-    func onTextFieldDidEndEditing<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Void)) -> Self {
-        textFieldDidEndEditingHandler = { [weak target] textField in
-            guard let target else { return }
-            handler(target, textField)
-        }
-        return self
-    }
     
-    @discardableResult
-    func onTextFieldDidBeginEditing<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Void)) -> Self {
-        textFieldDidBeginEditingHandler = { [weak target] textField in
-            guard let target else { return }
-            handler(target, textField)
-        }
-        return self
-    }
+    /// Fluent API fot setting `onEditingChangedHandler(_:)` handler.
     
     @discardableResult
     func onEditingChanged(_ handler: @escaping ((MKUITextField) -> Void)) -> Self {
         self.editingChangedHandler = handler
-        return self
-    }
-    
-    @discardableResult
-    func onEditingChanged<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUITextField) -> Void)) -> Self {
-        self.editingChangedHandler = { [weak target] textField in
-            guard let target else { return }
-            handler(target, textField)
-        }
         return self
     }
 

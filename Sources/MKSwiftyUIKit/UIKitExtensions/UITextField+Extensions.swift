@@ -18,6 +18,8 @@ public extension UITextField {
         self.textAlignment = alignment
     }
     
+    /// Sets the text field's `leftView` to a `UIImageView`.
+    
     @discardableResult
     func setLeftViewImage(_ image: UIImage?, tintColor: UIColor? = nil, width: CGFloat = 32, insets: UIEdgeInsets = .zero) -> Self {
         guard var image = image else {
@@ -44,11 +46,15 @@ public extension UITextField {
         return self
     }
     
+    /// Fluent API for setting the text field's `leftView` to a `UIImage`.
+    
     @discardableResult
     func setLeftViewImage(systemName: String, width: CGFloat = 32) -> Self {
         self.setLeftViewImage(.init(systemName: systemName), width: width)
         return self
     }
+    
+    /// Fluent API for setting the text field's `text`.
     
     @discardableResult
     func setText(_ string: String?) -> Self {
@@ -56,11 +62,15 @@ public extension UITextField {
         return self
     }
     
+    /// Fluent API for setting the text field's `placeholder`.
+    
     @discardableResult
     func setPlaceholder(_ string: String?) -> Self {
         self.placeholder = string
         return self
     }
+    
+    /// Fluent API for setting the text field's `textColor`.
     
     @discardableResult
     func setTextColor(_ color: UIColor) -> Self {
@@ -68,11 +78,15 @@ public extension UITextField {
         return self
     }
     
+    /// Fluent API for setting the text field's `keyboardType`.
+    
     @discardableResult
     func setKeyboardType(_ type: UIKeyboardType) -> Self {
         self.keyboardType = type
         return self
     }
+    
+    /// Fluent API for setting the text field's `textAlignment`.
     
     @discardableResult
     func setTextAlignment(_ alignment: NSTextAlignment) -> Self {
@@ -80,17 +94,24 @@ public extension UITextField {
         return self
     }
     
+    
+    /// Fluent API for setting the text field's `borderStyle`.
+    
     @discardableResult
     func setBorderStyle(_ style: UITextField.BorderStyle) -> Self {
         self.borderStyle = style
         return self
     }
     
+    /// Fluent API for setting the text field's `delegate`.
+    
     @discardableResult
     func setDelegate(_ delegate: UITextFieldDelegate) -> Self {
         self.delegate = delegate
         return self
     }
+    
+    /// Fluent API for setting the text field's `returnKeyType`.
     
     @discardableResult
     func setReturnKeyType(_ type: UIReturnKeyType) -> Self {

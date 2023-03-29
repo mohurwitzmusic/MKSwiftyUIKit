@@ -8,17 +8,22 @@
 import UIKit
 
 public extension UIViewController {
-
-    func addChildAndView(_ viewController: UIViewController, frame: CGRect?) {
+    
+    /// Convenience method for adding a child `UIViewController`, calling the appropriate lifecycle events
+    ///
+    /// - calls `willMove(toParent:)`
+    /// - calls `addChild(_:)`
+    /// - adds the `viewController`'s `view` as a subview with the provided `frame`
+    /// - calls `diMove(toParent:)`
+    
+    
+    func addViewControllerAsChild(_ viewController: UIViewController, frame: CGRect) {
         viewController.willMove(toParent: self)
         addChild(viewController)
         view.addSubview(viewController.view)
-        if let frame = frame {
-            viewController.view.frame = frame
-        } else {
-            viewController.view.frame = self.view.bounds
-        }
+        viewController.view.frame = frame
         viewController.didMove(toParent: self)
     }
+
     
 }

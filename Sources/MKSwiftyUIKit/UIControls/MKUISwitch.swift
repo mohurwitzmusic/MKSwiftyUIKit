@@ -7,17 +7,21 @@ open class MKUISwitch: UISwitch {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _privateSetup()
         setup()
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
+        _privateSetup()
         setup()
     }
     
-    open func setup() {
+    private func _privateSetup() {
         addTarget(self, action: #selector(_onValueChanged), for: .valueChanged)
     }
+    
+    open func setup() { }
 
     @objc private func _onValueChanged() {
         valueChangedHandler?(self)
@@ -27,34 +31,19 @@ open class MKUISwitch: UISwitch {
 
 public extension MKUISwitch {
     
-    @discardableResult
-    func configure<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUISwitch) -> Void)) -> Self {
-        handler(target, self)
-        return self
-    }
-    
+    /// Fluent API for setting `valueChangedHandler(_:)`
+
     @discardableResult
     func onValueChanged(_ handler: @escaping ((MKUISwitch) -> Void)) -> Self {
         self.valueChangedHandler = handler
         return self
     }
     
-    @discardableResult
-    func onValueChanged<T: AnyObject>(target: T, _ handler: @escaping ((T, MKUISwitch) -> Void)) -> Self {
-        self.valueChangedHandler = { [weak target] toggle in
-            if let target {
-                handler(target, toggle)
-            }
-        }
-        return self
-    }
-    
 }
-
 
 public extension UISwitch {
     
-    /// The same function as `setOn(_:animated)` but in a fluent interface.
+    /// Fluent API for `setIsOn(_:animated)`
     
     @discardableResult
     func setIsOn(_ isOn: Bool, animated: Bool = false) -> Self {

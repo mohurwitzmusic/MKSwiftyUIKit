@@ -20,6 +20,8 @@ public extension UIControl {
         addAction(newAction, for: event)
     }
     
+    /// Fluent API for setting the view's `isEnabled` property.
+    
     @discardableResult
     func setIsEnabled(_ enabled: Bool) -> Self {
         self.isEnabled = enabled
