@@ -143,10 +143,10 @@ public extension CGRect {
         return .init(x: rect.midX - (newSize.width/2), y: rect.midY - (newSize.height/2), width: newSize.width, height: newSize.height)
     }
     
-    func resized(cornerAnchor corner: UIRectCorner, to size: CGSize) -> CGRect {
+    func resized(to size: CGSize, cornerAnchor: UIRectCorner) -> CGRect {
         var newRect = self
         
-        switch corner {
+        switch cornerAnchor {
         case .topLeft:
             newRect.size = size
         case .topRight:
@@ -166,9 +166,9 @@ public extension CGRect {
         return newRect
     }
     
-    func resized(edgeAnchor edge: UIRectEdge, to size: CGSize) -> CGRect {
+    func resized(to size: CGSize, edgeAnchor: UIRectEdge) -> CGRect {
         var newRect = self
-        switch edge {
+        switch edgeAnchor {
         case .top:
             let horizontalInset = (width - size.width) / 2
             newRect.origin.y += height - size.height
