@@ -41,7 +41,7 @@ public extension CGRect {
         return 2 * (width + height)
     }
     
-    static func pinnedToCorner(_ corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
+    static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
         
         var x: CGFloat = 0
         var y: CGFloat = 0
@@ -78,7 +78,7 @@ public extension CGRect {
         return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
  
-    static func pinnedToEdge(_ edge: UIRectEdge, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
+    static func pinned(toEdge edge: UIRectEdge, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
         var x: CGFloat = 0
         var y: CGFloat = 0
         var newSize = size
@@ -143,7 +143,7 @@ public extension CGRect {
         return .init(x: rect.midX - (newSize.width/2), y: rect.midY - (newSize.height/2), width: newSize.width, height: newSize.height)
     }
     
-    func resizedFromCorner(_ corner: UIRectCorner, to size: CGSize) -> CGRect {
+    func resized(cornerAnchor corner: UIRectCorner, to size: CGSize) -> CGRect {
         var newRect = self
         
         switch corner {
@@ -166,7 +166,7 @@ public extension CGRect {
         return newRect
     }
     
-    func resizedFromEdge(_ edge: UIRectEdge, to size: CGSize) -> CGRect {
+    func resized(edgeAnchor edge: UIRectEdge, to size: CGSize) -> CGRect {
         var newRect = self
         switch edge {
         case .top:
