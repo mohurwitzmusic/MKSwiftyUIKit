@@ -33,14 +33,6 @@ public extension CGRect {
         .init(x: maxX, y: maxY)
     }
     
-    var area: CGFloat {
-        width * height
-    }
-    
-    var perimeter: CGFloat {
-        return 2 * (width + height)
-    }
-    
     static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
         
         var x: CGFloat = 0
