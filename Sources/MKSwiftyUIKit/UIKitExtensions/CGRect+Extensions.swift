@@ -143,4 +143,54 @@ public extension CGRect {
         return .init(x: rect.midX - (newSize.width/2), y: rect.midY - (newSize.height/2), width: newSize.width, height: newSize.height)
     }
     
+    func resizedFromCorner(_ corner: UIRectCorner, to size: CGSize) -> CGRect {
+        var newRect = self
+        
+        switch corner {
+        case .topLeft:
+            newRect.size = size
+        case .topRight:
+            newRect.origin.x += self.size.width - size.width
+            newRect.size = size
+        case .bottomLeft:
+            newRect.origin.y += self.size.height - size.height
+            newRect.size = size
+        case .bottomRight:
+            newRect.origin.x += self.size.width - size.width
+            newRect.origin.y += self.size.height - size.height
+            newRect.size = size
+        default:
+            break
+        }
+        
+        return newRect
+    }
+    
+    func resizedFromEdge(_ edge: UIRectEdge, to size: CGSize) -> CGRect {
+        var newRect = self
+        switch edge {
+        case .top:
+            let horizontalInset = (width - size.width) / 2
+            newRect.origin.y += height - size.height
+            newRect.size.width = size.width
+            newRect.origin.x += horizontalInset
+        case .left:
+            let verticalInset = (height - size.height) / 2
+            newRect.size.height = size.height
+            newRect.origin.y += verticalInset
+        case .bottom:
+            let horizontalInset = (width - size.width) / 2
+            newRect.size.width = size.width
+            newRect.origin.x += horizontalInset
+        case .right:
+            let verticalInset = (height - size.height) / 2
+            newRect.origin.x += width - size.width
+            newRect.size.height = size.height
+            newRect.origin.y += verticalInset
+        default:
+            break
+        }
+        return newRect
+    }
+    
 }
