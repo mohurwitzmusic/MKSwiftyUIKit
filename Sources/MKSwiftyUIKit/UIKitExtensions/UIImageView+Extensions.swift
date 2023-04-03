@@ -68,4 +68,12 @@ public extension UIImageView {
         self.contentMode = mode
         return self
     }
+    
+    /// Fluent API for setting the image's `adjustsImageSizeForAccessibilityContentSizeCategory`.
+    
+    @discardableResult
+    func setAdjustsImageSizeForAccessibilityContentSizeCategory(_ enabled: Bool) -> Self {
+        self.adjustsImageSizeForAccessibilityContentSizeCategory = enabled
+        return self
+    }
 }

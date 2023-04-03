@@ -90,6 +90,23 @@ public extension UIView {
         return self
     }
     
+    /// Fluent API for setting both the view's minimum and maximum `UIContentSizeCategory` to the same value.
+    
+    @discardableResult
+    func setContentSizeCategory(_ category: UIContentSizeCategory) -> Self {
+        self.minimumContentSizeCategory = category
+        self.maximumContentSizeCategory = category
+        return self
+    }
+    
+    /// Fluent API for setting the view's minimum and maximum `UIContentSizeCategory`.
+    
+    @discardableResult
+    func setContentSizeCategory(minimum: UIContentSizeCategory, maximum: UIContentSizeCategory) -> Self {
+        self.minimumContentSizeCategory = minimum
+        self.maximumContentSizeCategory = minimum
+        return self
+    }
     
     /// Fluent API for setting the view's frame.
     
