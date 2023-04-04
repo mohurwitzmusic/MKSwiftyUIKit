@@ -76,4 +76,12 @@ public extension UILabel {
         return self
     }
     
+    /// Fluent API for setting the label's `lineBreakMode`.
+    
+    @discardableResult
+    func setLineBreakMode(_ lineBreakMode: NSLineBreakMode) -> Self {
+        self.lineBreakMode = lineBreakMode
+        return self
+    }
+    
 }
