@@ -2,7 +2,7 @@ import UIKit
 
 open class MKGridLayoutMaker {
     
-    public enum Origin: Int {
+    public enum Origin: Int, Equatable {
         case topLeft = 0
         case topRight
         case bottomLeft
@@ -10,7 +10,7 @@ open class MKGridLayoutMaker {
         
     }
     
-    public enum Configuration: Int {
+    public enum Configuration: Int, Equatable {
         case rowByRow
         case columnByColumn
     }
@@ -23,7 +23,9 @@ open class MKGridLayoutMaker {
     
     open var bounds: CGRect = CGRect() {
         didSet {
-            self.needsMakeFrames = true
+            if oldValue != bounds {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -34,7 +36,9 @@ open class MKGridLayoutMaker {
             guard self.columns >= 1 else {
                 fatalError("Must specify at least 1 columns")
             }
-            self.needsMakeFrames = true
+            if oldValue != columns {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -45,7 +49,9 @@ open class MKGridLayoutMaker {
             guard self.rows >= 1 else {
                 fatalError("Must specify at least 1 rows")
             }
-            self.needsMakeFrames = true
+            if oldValue != rows {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -69,7 +75,9 @@ open class MKGridLayoutMaker {
     
     open var origin: Origin = .topLeft {
         didSet {
-            self.needsMakeFrames = true
+            if oldValue != origin {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -77,7 +85,9 @@ open class MKGridLayoutMaker {
     
     open var configuration: Configuration = .rowByRow {
         didSet {
-            self.needsMakeFrames = true
+            if oldValue != configuration {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -300,3 +310,5 @@ open class MKGridLayoutMaker {
         return result
     }
 }
+
+
