@@ -59,7 +59,9 @@ open class MKGridLayoutMaker {
     
     open var rowSpacing: CGFloat = 2 {
         didSet {
-            self.needsMakeFrames = true
+            if oldValue != rowSpacing {
+                self.needsMakeFrames = true
+            }
         }
     }
     
@@ -67,7 +69,9 @@ open class MKGridLayoutMaker {
     
     open var columnSpacing: CGFloat = 2 {
         didSet {
-            self.needsMakeFrames = true
+            if oldValue != columnSpacing {
+                self.needsMakeFrames = true
+            }
         }
     }
     
