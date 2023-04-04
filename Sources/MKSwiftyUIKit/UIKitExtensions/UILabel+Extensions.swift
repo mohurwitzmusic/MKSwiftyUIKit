@@ -84,4 +84,23 @@ public extension UILabel {
         return self
     }
     
+    /// Fluent API for setting the label's `adjustFontSizeToFitWidth`, supplying an optional `minimumScaleFactor`. Defaults to 0.1 (10% the size of the original font size).
+
+    @discardableResult
+    func setAdjustsFontSizeToFitWidth(_ enabled: Bool, minimumScaleFactor: CGFloat = 0.1) -> Self {
+        self.adjustsFontSizeToFitWidth = enabled
+        self.minimumScaleFactor = minimumScaleFactor
+        return self
+    }
+    
+    /// Fluent API for setting the label's `adjustFontSizeToFitWidth` to scale down to `minimumFontSize`.
+
+    @discardableResult
+    func setAdjustsFontSizeToFitWidth(_ enabled: Bool, minimumFontSize: CGFloat) -> Self {
+        self.adjustsFontSizeToFitWidth = enabled
+        self.minimumScaleFactor = minimumFontSize/self.font.pointSize
+        return self
+    }
+
+    
 }
