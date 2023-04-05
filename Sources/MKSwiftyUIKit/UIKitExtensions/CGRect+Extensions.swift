@@ -107,7 +107,7 @@ public extension CGRect {
         return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
     
-    static func centered(in rect: CGRect, size: CGSize, constrainToBounds: Bool) -> CGRect {
+    static func centered(in rect: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var newSize = size
         
         if constrainToBounds {
@@ -178,6 +178,50 @@ public extension CGRect {
             break
         }
         return newRect
+    }
+    
+    func translatedBy(dx: CGFloat, dy: CGFloat) -> CGRect {
+        var copy = self
+        copy.origin.x += dx
+        copy.origin.y += dy
+        return copy
+    }
+    
+    func constrained(to rect: CGRect, maintainAspectRatio: Bool = true) -> CGRect {
+        var result = self
+        if result.origin.x < rect.origin.x {
+            result.origin.x = rect.origin.x
+        }
+        if result.origin.y < rect.origin.y {
+            result.origin.y = rect.origin.y
+        }
+        if result.maxX > rect.maxX {
+            result.origin.x -= result.maxX - rect.maxX
+        }
+        if result.maxY > rect.maxY {
+            result.origin.y -= result.maxY - rect.maxY
+        }
+        if maintainAspectRatio {
+            if result.maxX > rect.maxX {
+                let scaleFactor = rect.width / result.width
+                result.size.width *= scaleFactor
+                result.size.height *= scaleFactor
+            }
+            if result.maxY > rect.maxY {
+                let scaleFactor = rect.height / result.height
+                result.size.width *= scaleFactor
+                result.size.height *= scaleFactor
+            }
+        } else {
+            if result.maxX > rect.maxX {
+                result.size.width = rect.width
+            }
+            if result.maxY > rect.maxY {
+                result.size.height = rect.height
+            }
+        }
+        
+        return result
     }
     
 }
