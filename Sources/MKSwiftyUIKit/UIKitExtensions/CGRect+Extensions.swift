@@ -33,15 +33,15 @@ public extension CGRect {
         .init(x: maxX, y: maxY)
     }
     
-    static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
+    static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         
         var x: CGFloat = 0
         var y: CGFloat = 0
         var newSize = size
         
         if constrainToBounds {
-            let maxWidth = bounds.width - insets.x
-            let maxHeight = bounds.height - insets.y
+            let maxWidth = bounds.width
+            let maxHeight = bounds.height
             let aspectRatio = size.width / size.height
             if maxWidth < size.width || maxHeight < size.height {
                 let width = min(maxWidth, size.width)
@@ -55,29 +55,26 @@ public extension CGRect {
         }
         
         if corner.contains(.topLeft) {
-            x = insets.x
-            y = insets.y
+            //
         } else if corner.contains(.topRight) {
-            x = bounds.width - newSize.width - insets.x
-            y = insets.y
+            x = bounds.width - newSize.width
         } else if corner.contains(.bottomLeft) {
-            x = insets.x
-            y = bounds.height - newSize.height - insets.y
+            y = bounds.height - newSize.height
         } else if corner.contains(.bottomRight) {
-            x = bounds.width - newSize.width - insets.x
-            y = bounds.height - newSize.height - insets.y
+            x = bounds.width - newSize.width
+            y = bounds.height - newSize.height
         }
         return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
  
-    static func pinned(toEdge edge: UIRectEdge, in bounds: CGRect, size: CGSize, insets: (x: CGFloat, y: CGFloat) = (0, 0), constrainToBounds: Bool = false) -> CGRect {
+    static func pinned(toEdge edge: UIRectEdge, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var x: CGFloat = 0
         var y: CGFloat = 0
         var newSize = size
         
         if constrainToBounds {
-            let maxWidth = bounds.width - insets.x
-            let maxHeight = bounds.height - insets.y
+            let maxWidth = bounds.width
+            let maxHeight = bounds.height
             let aspectRatio = size.width / size.height
             
             if maxWidth < size.width || maxHeight < size.height {
@@ -95,15 +92,13 @@ public extension CGRect {
         switch edge {
         case .top:
             x = (bounds.width - newSize.width) / 2
-            y = insets.y
         case .bottom:
             x = (bounds.width - newSize.width) / 2
-            y = bounds.height - newSize.height - insets.y
+            y = bounds.height - newSize.height
         case .left:
-            x = insets.x
             y = (bounds.height - newSize.height) / 2
         case .right:
-            x = bounds.width - newSize.width - insets.x
+            x = bounds.width - newSize.width
             y = (bounds.height - newSize.height) / 2
         default:
             break
