@@ -9,10 +9,6 @@ public extension UIAlertController {
         return self
     }
     
-    func present(in viewController: UIViewController, animated: Bool = true) {
-        viewController.present(self, animated: animated)
-    }
-    
     @discardableResult
     func addOKAction(style: UIAlertAction.Style = .default, handler: ((UIAlertAction) -> Void)? = nil) -> Self {
         self.addAction(title: "OK", style: style, action: handler)
