@@ -10,4 +10,8 @@ public extension CGSize {
         return 2 * (width + height)
     }
     
+    var largestInscribedCircleRadius: CGFloat {
+        return min(width, height) / 2
+    }
+    
 }
