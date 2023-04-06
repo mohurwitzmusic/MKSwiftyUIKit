@@ -72,7 +72,7 @@ public extension MKFluentConstrainable {
     /// Automatically sets `translatesAutoResizingMasksIntoConstraints` to `false`.
     
     @discardableResult
-    func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero, activate: Bool = true) -> (constraints: MKKMultiConstraintResult, view: Self) {
+    func constrainToLayoutGuide(_ layoutGuide: UILayoutGuide, insets: UIEdgeInsets = .zero, priority: UILayoutPriority = .defaultHigh, activate: Bool = true) -> (constraints: MKKMultiConstraintResult, view: Self) {
         translatesAutoresizingMaskIntoConstraints = false
         var constraints = MKKMultiConstraintResult()
         constraints.left = leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: insets.left)
@@ -82,6 +82,10 @@ public extension MKFluentConstrainable {
         if activate {
             constraints.activate()
         }
+        constraints.top?.priority = priority
+        constraints.left?.priority = priority
+        constraints.right?.priority = priority
+        constraints.bottom?.priority = priority
         return (constraints, self)
     }
     
@@ -90,7 +94,7 @@ public extension MKFluentConstrainable {
     /// Automatically sets `translatesAutoResizingMasksIntoConstraints` to `false
     
     @discardableResult
-    func constrainToBounds(of view: UIView, insets: UIEdgeInsets = .zero, activate: Bool = true) -> (constraints: MKKMultiConstraintResult, view: Self) {
+    func constrainToBounds(of view: UIView, insets: UIEdgeInsets = .zero, priority: UILayoutPriority = .defaultHigh, activate: Bool = true) -> (constraints: MKKMultiConstraintResult, view: Self) {
         translatesAutoresizingMaskIntoConstraints = false
         var constraints = MKKMultiConstraintResult()
         constraints.left = leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left)
@@ -100,6 +104,10 @@ public extension MKFluentConstrainable {
         if activate {
             constraints.activate()
         }
+        constraints.top?.priority = priority
+        constraints.left?.priority = priority
+        constraints.right?.priority = priority
+        constraints.bottom?.priority = priority
         return (constraints, self)
     }
 
