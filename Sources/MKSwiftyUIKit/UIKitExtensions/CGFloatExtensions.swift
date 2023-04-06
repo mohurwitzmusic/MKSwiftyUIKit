@@ -64,15 +64,15 @@ public extension CGFloat {
         return self < 0.5 ? 16 * self * self * self * self * self : 1 - pow(-2 * self + 2, 5) / 2;
     }
 
-    func easeInEselfpo() -> CGFloat {
+    func easeInExpo() -> CGFloat {
         return self == 0 ? 0 : pow(2, 10 * self - 10);
     }
 
-    func easeOutEselfpo() -> CGFloat {
+    func easeOutExpo() -> CGFloat {
         return self == 1 ? 1 : 1 - pow(2, -10 * self);
     }
 
-    func easeInOutEselfpo() -> CGFloat {
+    func easeInOutExpo() -> CGFloat {
         return self == 0
       ? 0
       : self == 1
