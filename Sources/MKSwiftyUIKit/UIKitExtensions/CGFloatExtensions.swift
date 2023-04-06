@@ -3,9 +3,7 @@
 import UIKit
 
 public extension CGFloat {
-    
-    /// Smooth start, decelerating towards the end.
-        
+            
     func easeInSine() -> CGFloat {
         return 1 - cos((self * CGFloat.pi) / 2);
     }
