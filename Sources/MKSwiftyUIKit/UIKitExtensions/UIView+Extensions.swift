@@ -191,7 +191,7 @@ public extension UIView {
 
 //MARK: - Constraint Extensions
 
-extension UIView {
+public extension UIView {
     
     /// Fluent API for constraining a view's edges to a layout guide. Returns the created constraint and the constrained view.
     ///
