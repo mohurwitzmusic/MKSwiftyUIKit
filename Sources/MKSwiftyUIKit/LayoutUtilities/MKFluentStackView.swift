@@ -69,23 +69,25 @@ open class MKVStack: MKFluentStackView {
 public extension MKFluentStackView {
     
     @discardableResult
-      func spacing(_ value: CGFloat) -> Self {
-          self.spacing = value
-          
-          func updateSpacing(for view: UIView) {
-              if let stackView = view as? MKFluentStackView {
-                  stackView.spacing = value
-              }
-              view.subviews.forEach { subview in
-                  updateSpacing(for: subview)
-              }
-          }
-          
-          arrangedSubviews.forEach { subview in
-              updateSpacing(for: subview)
-          }
-          
-          return self
-      }
+    func spacing(_ value: CGFloat) -> Self {
+        self.spacing = value
+        
+        func updateSpacing(for view: UIView) {
+            if let stackView = view as? MKFluentStackView {
+                stackView.spacing = value
+            }
+            view.subviews.forEach { subview in
+                updateSpacing(for: subview)
+            }
+        }
+        
+        arrangedSubviews.forEach { subview in
+            updateSpacing(for: subview)
+        }
+        
+        return self
+    }
     
 }
+
+
