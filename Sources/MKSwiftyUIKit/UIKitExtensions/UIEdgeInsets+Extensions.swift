@@ -2,8 +2,8 @@ import UIKit
 
 public extension UIEdgeInsets {
     
-    init(allEdges inset: CGFloat) {
-        self = .init(top: inset, left: inset, bottom: inset, right: inset)
+    static func allEdges(_ inset: CGFloat) -> UIEdgeInsets {
+        return .init(top: inset, left: inset, bottom: inset, right: inset)
     }
     
     init(dx: CGFloat, dy: CGFloat) {

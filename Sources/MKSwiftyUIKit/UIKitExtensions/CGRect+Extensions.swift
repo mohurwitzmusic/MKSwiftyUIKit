@@ -29,8 +29,7 @@ public extension CGRect {
         .init(x: maxX, y: maxY)
     }
     
-    static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
-        
+    static func aligned(toCorner corner: UIRectCorner, of bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var x: CGFloat = 0
         var y: CGFloat = 0
         var newSize = size
@@ -62,8 +61,13 @@ public extension CGRect {
         }
         return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
+    
+    @available(*, deprecated, renamed: "aligned(toCorner:of:size:)")
+    static func pinned(toCorner corner: UIRectCorner, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
+        aligned(toCorner: corner, of: bounds, size: size, constrainToBounds: constrainToBounds)
+    }
  
-    static func pinned(toEdge edge: UIRectEdge, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
+    static func aligned(toEdge edge: UIRectEdge, of bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var x: CGFloat = 0
         var y: CGFloat = 0
         var newSize = size
@@ -103,6 +107,11 @@ public extension CGRect {
         return .init(x: x, y: y, width: newSize.width, height: newSize.height)
     }
     
+    @available(*, deprecated, renamed: "aligned(toEdge:of:size:)")
+    static func pinned(toEdge edge: UIRectEdge, in bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
+        aligned(toEdge: edge, of: bounds, size: size, constrainToBounds: constrainToBounds)
+    }
+    
     static func centered(in rect: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var newSize = size
         
@@ -122,7 +131,6 @@ public extension CGRect {
                 }
             }
         }
-        
         return .init(x: rect.midX - (newSize.width/2), y: rect.midY - (newSize.height/2), width: newSize.width, height: newSize.height)
     }
     
