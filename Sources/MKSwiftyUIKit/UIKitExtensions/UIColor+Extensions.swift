@@ -2,6 +2,14 @@ import UIKit
 
 public extension UIColor {
     
+    static func random(minBrightness: CGFloat = 0.5, includeAlpha: Bool = false) -> UIColor {
+        let hue = CGFloat.random(in: 0...1)
+        let saturation = CGFloat.random(in: 0...1)
+        let brightness = CGFloat.random(in: minBrightness...1)
+        let alpha: CGFloat = includeAlpha ? .random(in: 0...1) : 1
+        return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    }
+    
     func withBrightnessComponent(_ brightness: CGFloat) -> UIColor {
         var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
         
