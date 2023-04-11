@@ -29,6 +29,10 @@ public extension CGRect {
         .init(x: maxX, y: maxY)
     }
     
+    func insetBy(dxy: CGFloat) -> Self {
+        return self.insetBy(dx: dxy, dy: dxy)
+    }
+    
     static func aligned(toCorner corner: UIRectCorner, of bounds: CGRect, size: CGSize, constrainToBounds: Bool = false) -> CGRect {
         var x: CGFloat = 0
         var y: CGFloat = 0
