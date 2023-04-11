@@ -133,6 +133,14 @@ public extension UIView {
         return self
     }
     
+    /// Fluent API for adding the view as an arranged subview of a `UIStackView`.
+    
+    @discardableResult
+    func addAsArrangedSubiew(of stackView: UIStackView) -> Self {
+        stackView.addArrangedSubview(self)
+        return self
+    }
+    
     /// Fluent API for setting the view's layout margins.
     
     @discardableResult
