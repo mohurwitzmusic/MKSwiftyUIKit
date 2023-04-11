@@ -7,4 +7,8 @@ public extension UIBezierPath {
         return UIBezierPath(arcCenter: rect.center, radius: rect.size.largestInscribedCircleRadius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
     }
     
+    static func circle(center: CGPoint, radius: CGFloat) -> UIBezierPath {
+        return UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+    }
+    
 }
