@@ -24,6 +24,11 @@ public extension UIFont {
         }
         return self
     }
+    
+    func width(of text: String) -> CGFloat {
+         let attributedString = NSAttributedString(string: text, attributes: [.font: self])
+         return attributedString.size().width
+     }
 
 }
 
