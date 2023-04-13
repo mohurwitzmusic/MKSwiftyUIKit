@@ -14,4 +14,10 @@ public extension CGSize {
         return min(width, height) / 2
     }
     
+    /// Creates a `CGSize` with equal width and height
+    
+    init(square: CGFloat) {
+        self.init(width: square, height: square)
+    }
+    
 }
