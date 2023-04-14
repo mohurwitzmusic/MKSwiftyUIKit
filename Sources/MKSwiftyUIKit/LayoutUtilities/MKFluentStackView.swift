@@ -19,6 +19,14 @@ open class MKFluentStackView: UIStackView {
         public static func buildExpression<Content: UIView>(_ expression: () -> Content) -> UIView {
             return expression()
         }
+        
+        static func buildBlock(_ components: [UIView]...) -> [UIView] {
+            components.flatMap { $0 }
+        }
+        
+        static func buildExpression(_ expression: [UIView]) -> [UIView] {
+            expression
+        }
     }
     
     public init(axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fill, alignment: UIStackView.Alignment = .fill, spacing: CGFloat = 2, @ViewBuilder content: () -> [UIView]) {
