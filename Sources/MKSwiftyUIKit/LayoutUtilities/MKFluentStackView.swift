@@ -20,11 +20,11 @@ open class MKFluentStackView: UIStackView {
             return expression()
         }
         
-        static func buildBlock(_ components: [UIView]...) -> [UIView] {
+        public static func buildBlock(_ components: [UIView]...) -> [UIView] {
             components.flatMap { $0 }
         }
         
-        static func buildExpression(_ expression: [UIView]) -> [UIView] {
+        public static func buildExpression(_ expression: [UIView]) -> [UIView] {
             expression
         }
     }
