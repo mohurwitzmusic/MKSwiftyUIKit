@@ -3,15 +3,15 @@ import UIKit
 public extension UIRectCorner {
     
     /// The top-left and bottom-left corners of the rectangle.
-    static let leftEdge: UIRectCorner = [.topLeft, .bottomLeft]
+    static let leftCorners: UIRectCorner = [.topLeft, .bottomLeft]
     
     /// The top-left and top-right corners of the rectangle.
-    static let topEdge: UIRectCorner = [.topLeft, .topRight]
+    static let topCorners: UIRectCorner = [.topLeft, .topRight]
     
     /// The top-right and bottom-right corners of the rectangle.
-    static let rightEdge: UIRectCorner = [.topRight, .bottomRight]
+    static let rightCorners: UIRectCorner = [.topRight, .bottomRight]
     
     /// The bottom-left and bottom-right corners of the rectangle.
-    static let bottomEdge: UIRectCorner = [.bottomLeft, .bottomRight]
+    static let bottomCorners: UIRectCorner = [.bottomLeft, .bottomRight]
     
 }
