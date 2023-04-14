@@ -8,11 +8,6 @@ open class MKFluentStackView: UIStackView {
         public static func buildBlock(_ components: UIView...) -> [UIView] {
             return components
         }
-        
-        public static func buildBlock(_ components: [UIView]...) -> [UIView] {
-            return components.flatMap { $0 }
-        }
-        
         public static func buildExpression(_ expression: UIView) -> UIView {
             return expression
         }
