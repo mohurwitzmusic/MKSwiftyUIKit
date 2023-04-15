@@ -190,9 +190,19 @@ public extension UIView {
         return self
     }
     
+    /// Fluent API for settings the view's `isHidden` property.
+    
     @discardableResult
     func setIsHidden(_ isHidden: Bool) -> Self {
         self.isHidden = isHidden
+        return self
+    }
+    
+    /// Fluent API for setting the view's `alpha`.
+    
+    @discardableResult
+    func setAlpha(_ alpha: CGFloat) -> Self {
+        self.alpha = alpha
         return self
     }
 }
