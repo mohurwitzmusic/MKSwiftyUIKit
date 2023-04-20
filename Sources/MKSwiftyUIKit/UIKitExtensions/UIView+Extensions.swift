@@ -59,18 +59,20 @@ public extension UIView {
     @discardableResult
     func setCornerRadius(_ radius: CGFloat, corners: UIRectCorner = .allCorners) -> Self {
         self.layer.cornerRadius = radius
+        var maskedCorners = CACornerMask()
         if corners.contains(.topLeft) {
-            layer.maskedCorners.insert(.layerMinXMinYCorner)
+            maskedCorners.insert(.layerMinXMinYCorner)
         }
         if corners.contains(.topRight) {
-            layer.maskedCorners.insert(.layerMaxXMinYCorner)
+            maskedCorners.insert(.layerMaxXMinYCorner)
         }
         if corners.contains(.bottomLeft) {
-            layer.maskedCorners.insert(.layerMinXMaxYCorner)
+            maskedCorners.insert(.layerMinXMaxYCorner)
         }
         if corners.contains(.bottomRight) {
-            layer.maskedCorners.insert(.layerMaxXMaxYCorner)
+            maskedCorners.insert(.layerMaxXMaxYCorner)
         }
+        layer.maskedCorners = maskedCorners
         return self
     }
     
