@@ -86,5 +86,13 @@ public struct MKGridLayoutCalculator {
         }
         return frameFor(row: row, column: column)
     }
+    
+    public mutating func setRows(minimumHeight: CGFloat) {
+        self.rows = max(Int((bounds.height + rowSpacing) / (minimumHeight + rowSpacing)), 0)
+    }
+    
+    public mutating func setColumns(minimumWidth: CGFloat) {
+        self.columns = max(Int((bounds.width + columnSpacing) / (minimumWidth + columnSpacing)), 0)
+    }
 
 }
