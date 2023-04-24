@@ -1,6 +1,6 @@
 import UIKit
 
-public struct MKGridLayoutCalculator {
+public struct MKGridLayoutCalculator: Equatable {
 
     public var rows: Int = 0
     public var columns: Int = 0
@@ -8,14 +8,14 @@ public struct MKGridLayoutCalculator {
     public var rowSpacing: CGFloat = 2
     public var columnSpacing: CGFloat = 2
     
-    public enum Origin {
+    public enum Origin: Equatable {
         case topLeft
         case topRight
         case bottomLeft
         case bottomRight
     }
 
-    public enum Direction {
+    public enum Direction: Equatable {
         case columnByColumn
         case rowByRow
     }
@@ -95,4 +95,29 @@ public struct MKGridLayoutCalculator {
         self.columns = max(Int((bounds.width + columnSpacing) / (minimumWidth + columnSpacing)), 0)
     }
 
+    public func indexPath(at point: CGPoint) -> IndexPath? {
+        let x = point.x - bounds.minX
+        let y = point.y - bounds.minY
+        let column = Int((x + columnSpacing) / (itemWidth + columnSpacing))
+        let row = Int((y + rowSpacing) / (itemHeight + rowSpacing))
+        guard row >= 0, row < rows, column >= 0, column < columns else {
+            return nil
+        }
+        return IndexPath(row: row, section: column)
+    }
+
+    public func indexPaths(intersecting rect: CGRect) -> Set<IndexPath> {
+        let startColumn = max(Int((rect.minX - bounds.minX) / (itemWidth + columnSpacing)), 0)
+        let endColumn = min(Int(ceil((rect.maxX - bounds.minX) / (itemWidth + columnSpacing))), columns)
+        let startRow = max(Int((rect.minY - bounds.minY) / (itemHeight + rowSpacing)), 0)
+        let endRow = min(Int(ceil((rect.maxY - bounds.minY) / (itemHeight + rowSpacing))), rows)
+        var indexPaths = Set<IndexPath>()
+        for column in startColumn..<endColumn {
+            for row in startRow..<endRow {
+                let indexPath = IndexPath(row: row, section: column)
+                indexPaths.insert(indexPath)
+            }
+        }
+        return indexPaths
+    }
 }
