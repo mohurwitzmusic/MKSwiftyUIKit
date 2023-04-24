@@ -33,10 +33,12 @@ public struct MKGridLayoutCalculator {
     }
     
     public var itemWidth: CGFloat {
+        guard columns >= 0 else { return .zero }
         return (self.bounds.width - (CGFloat(self.columns - 1) * columnSpacing)) / CGFloat(columns)
     }
     
     public var itemHeight: CGFloat {
+        guard rows >= 0 else { return .zero }
         return (self.bounds.height - (CGFloat(self.rows - 1) * rowSpacing)) / CGFloat(rows)
     }
     
