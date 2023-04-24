@@ -87,12 +87,12 @@ public struct MKGridLayoutCalculator: Equatable {
         return frameFor(row: row, column: column)
     }
     
-    public mutating func setRows(minimumHeight: CGFloat) {
-        self.rows = max(Int((bounds.height + rowSpacing) / (minimumHeight + rowSpacing)), 0)
+    public func rows(fittingMinimumHeight height: CGFloat) -> Int {
+        max(Int((bounds.height + rowSpacing) / (height + rowSpacing)), 0)
     }
     
-    public mutating func setColumns(minimumWidth: CGFloat) {
-        self.columns = max(Int((bounds.width + columnSpacing) / (minimumWidth + columnSpacing)), 0)
+    public func columns(fittingMinimumWidth width: CGFloat) -> Int {
+        max(Int((bounds.width + columnSpacing) / (width + columnSpacing)), 0)
     }
 
     /// Returns the `IndexPath` containing `point`, or `nil` if the point is in a spacing area or outside the grid.
