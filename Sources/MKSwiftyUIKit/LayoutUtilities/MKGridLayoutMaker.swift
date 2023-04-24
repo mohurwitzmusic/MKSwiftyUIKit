@@ -1,5 +1,6 @@
 import UIKit
 
+@available(*, deprecated, message: "MKGridLayoutMaker will be deprecated in a future release. Switch to 'MKGridLayoutCalculator'.")
 open class MKGridLayoutMaker {
     
     public enum Origin: Int, Equatable {
@@ -7,7 +8,6 @@ open class MKGridLayoutMaker {
         case topRight
         case bottomLeft
         case bottomRight
-        
     }
     
     public enum Configuration: Int, Equatable {
