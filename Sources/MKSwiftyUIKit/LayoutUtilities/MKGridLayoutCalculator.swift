@@ -32,17 +32,14 @@ public struct MKGridLayoutCalculator: Equatable {
         self.columnSpacing = spacing
     }
     
-    public var itemWidth: CGFloat {
-        guard columns >= 0 else { return .zero }
-        return (self.bounds.width - (CGFloat(self.columns - 1) * columnSpacing)) / CGFloat(columns)
+    public var cellSize: CGSize {
+        guard rows >= 0, columns >= 0 else { return .zero }
+        let width = (self.bounds.width - (CGFloat(self.columns - 1) * columnSpacing)) / CGFloat(columns)
+        let height = (self.bounds.height - (CGFloat(self.rows - 1) * rowSpacing)) / CGFloat(rows)
+        return .init(width: width, height: height)
     }
     
-    public var itemHeight: CGFloat {
-        guard rows >= 0 else { return .zero }
-        return (self.bounds.height - (CGFloat(self.rows - 1) * rowSpacing)) / CGFloat(rows)
-    }
-    
-    public func frameFor(row: Int, column: Int) -> CGRect {
+    public func frameForCellAt(row: Int, column: Int) -> CGRect {
         guard row >= 0, row < rows else {
             fatalError("Row \(row) index out of bounds")
         }
@@ -52,14 +49,13 @@ public struct MKGridLayoutCalculator: Equatable {
         guard rows >= 0 || columns >= 0 else {
             return .zero
         }
-        let w = itemWidth
-        let h = itemHeight
-        let x: CGFloat = self.bounds.minX + ((w + self.columnSpacing) * CGFloat(column))
-        let y: CGFloat = self.bounds.minY + ((h + self.rowSpacing) * CGFloat(row))
-        return .init(x: x, y: y, width: w, height: h)
+        let cellSize = self.cellSize
+        let x: CGFloat = self.bounds.minX + ((cellSize.width + self.columnSpacing) * CGFloat(column))
+        let y: CGFloat = self.bounds.minY + ((cellSize.height + self.rowSpacing) * CGFloat(row))
+        return .init(origin: .init(x: x, y: y), size: cellSize)
     }
     
-    public func frameForItem(atIndex index: Int, gridOrigin: Origin = .topLeft, layoutDirection: Direction = .rowByRow) -> CGRect {
+    public func frameForCellAt(index: Int, gridOrigin: Origin = .topLeft, layoutDirection: Direction = .rowByRow) -> CGRect {
         guard index >= 0 && index < rows * columns else {
             fatalError("Index \(index) out of bounds")
         }
@@ -84,7 +80,7 @@ public struct MKGridLayoutCalculator: Equatable {
             row = rows - 1 - row
             column = columns - 1 - column
         }
-        return frameFor(row: row, column: column)
+        return frameForCellAt(row: row, column: column)
     }
     
     public func rows(fittingMinimumHeight height: CGFloat) -> Int {
@@ -95,68 +91,36 @@ public struct MKGridLayoutCalculator: Equatable {
         max(Int((bounds.width + columnSpacing) / (width + columnSpacing)), 0)
     }
 
-    /// Returns the `IndexPath` containing `point`, or `nil` if the point is in a spacing area or outside the grid.
+    /// Returns the `IndexPath` containing `point`, optionally rejecting the area in between cells (defaults to `true`)
 
-    public func indexPath(containing point: CGPoint) -> IndexPath? {
-        let x = point.x - bounds.minX
-        let y = point.y - bounds.minY
-        let column = Int((x + columnSpacing) / (itemWidth + columnSpacing))
-        let row = Int((y + rowSpacing) / (itemHeight + rowSpacing))
-        guard row >= 0, row < rows, column >= 0, column < columns else {
-            return nil
-        }
-        return IndexPath(row: row, section: column)
-    }
-    
-    /// Returns the `IndexPath` nearest to `point`, regardless of whether the point is inside a tile or in a spacing area.
-    
-    public func indexPath(nearest point: CGPoint) -> IndexPath? {
-        let x = point.x - bounds.minX
-        let y = point.y - bounds.minY
-        let column = Int(round(x / (itemWidth + columnSpacing)))
-        let row = Int(round(y / (itemHeight + rowSpacing)))
-        guard row >= 0, row < rows, column >= 0, column < columns else {
-            return nil
-        }
-        return IndexPath(row: row, section: column)
-    }
-
-    /// Returns a set of `IndexPath` objects for all grid cells intersecting the given `CGRect`.
-
-    public func indexPaths(intersecting rect: CGRect) -> Set<IndexPath> {
-        let startColumn = max(Int((rect.minX - bounds.minX) / (itemWidth + columnSpacing)), 0)
-        let endColumn = min(Int(ceil((rect.maxX - bounds.minX) / (itemWidth + columnSpacing))), columns)
-        let startRow = max(Int((rect.minY - bounds.minY) / (itemHeight + rowSpacing)), 0)
-        let endRow = min(Int(ceil((rect.maxY - bounds.minY) / (itemHeight + rowSpacing))), rows)
-        var indexPaths = Set<IndexPath>()
-        for column in startColumn..<endColumn {
-            for row in startRow..<endRow {
-                let indexPath = IndexPath(row: row, section: column)
-                indexPaths.insert(indexPath)
+    public func indexPath(containing point: CGPoint, rejectingSpacing: Bool = true) -> IndexPath? {
+        for column in 0..<columns {
+            for row in 0..<rows {
+                var frame = frameForCellAt(row: row, column: column)
+                if !rejectingSpacing {
+                    frame = frame.insetBy(dx: -columnSpacing/2, dy: -rowSpacing/2)
+                }
+                if frame.contains(point) { return .init(row: row, section: column) }
             }
         }
-        return indexPaths
+        return nil
     }
     
-    /// Returns the `IndexPath` of the grid cell with the largest intersection area with the given `CGRect`.
-    
-    public func indexPath(nearestIntersection rect: CGRect) -> IndexPath? {
-        let intersectingIndexPaths = indexPaths(intersecting: rect)
-        guard !intersectingIndexPaths.isEmpty else { return nil }
-        var maxOverlapArea: CGFloat = 0.0
-        var maxOverlapIndexPath: IndexPath? = nil
-        for indexPath in intersectingIndexPaths {
-            let cellFrame = frameFor(row: indexPath.row, column: indexPath.section)
-            let intersection = rect.intersection(cellFrame)
-            let overlapArea = intersection.width * intersection.height
-            if overlapArea > maxOverlapArea {
-                maxOverlapArea = overlapArea
-                maxOverlapIndexPath = indexPath
+    /// Returns a set of `IndexPath` objects for all grid cells intersecting the given `CGRect`, optionally reject the area between cells (defaults to `true`)
+
+    public func indexPaths(intersecting rect: CGRect, rejectingSpacing: Bool = true) -> Set<IndexPath> {
+        var intersectingIndexPaths = Set<IndexPath>()
+        for column in 0..<columns {
+            for row in 0..<rows {
+                var frame = frameForCellAt(row: row, column: column)
+                if !rejectingSpacing {
+                    frame = frame.insetBy(dx: -columnSpacing/2, dy: -rowSpacing/2)
+                }
+                if frame.intersects(rect) {
+                    intersectingIndexPaths.insert(.init(row: row, section: column))
+                }
             }
         }
-        return maxOverlapIndexPath
+        return intersectingIndexPaths
     }
-
 }
-
-
