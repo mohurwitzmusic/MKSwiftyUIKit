@@ -44,8 +44,8 @@ public struct MKGridLayoutCalculator: Equatable {
         let rows = CGFloat(rows)
         let columns = CGFloat(columns)
         let size = cellSize
-        let width = size.width * columns - ((columns - 1) * columnSpacing)
-        let height = size.height * rows - ((rows - 1) * rowSpacing)
+        let width = size.width * columns + ((columns - 1) * columnSpacing)
+        let height = size.height * rows + ((rows - 1) * rowSpacing)
         return CGSize(width: width, height: height)
     }
 
