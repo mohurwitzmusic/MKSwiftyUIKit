@@ -39,6 +39,17 @@ public struct MKGridLayoutCalculator: Equatable {
         return .init(width: width, height: height)
     }
     
+    public func cellSize(rows: Int, columns: Int) -> CGSize {
+        guard self.rows >= 0, self.columns >= 0 else { return .zero }
+        let rows = CGFloat(rows)
+        let columns = CGFloat(columns)
+        let size = cellSize
+        let width = size.width * columns - ((columns - 1) * columnSpacing)
+        let height = size.height * rows - ((rows - 1) * rowSpacing)
+        return CGSize(width: width, height: height)
+    }
+
+    
     public func frameForCellAt(row: Int, column: Int) -> CGRect {
         guard row >= 0, row < rows else {
             fatalError("Row \(row) index out of bounds")
